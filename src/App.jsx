@@ -23,7 +23,11 @@ export default function App() {
   const [showSettings, setShowSettings] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const forecast = useMemo(() => computeForecast(property, referenceData), [property, referenceData])
+  const forecast  = useMemo(() => computeForecast(property, referenceData), [property, referenceData])
+  const zoneName  = useMemo(
+    () => referenceData.find(r => r.zone === property.zone)?.zoneName ?? property.zone,
+    [referenceData, property.zone]
+  )
 
   const handleLoadSheet = useCallback(async () => {
     if (!sheetUrl.trim()) return
@@ -103,7 +107,7 @@ export default function App() {
           {forecast ? (
             <>
               <AnnualSummary forecast={forecast} />
-              <ForecastTable forecast={forecast} property={property} />
+              <ForecastTable forecast={forecast} property={property} zoneName={zoneName} />
             </>
           ) : (
             <div className="no-data">

@@ -19,7 +19,7 @@ const loadImage = src => new Promise((resolve, reject) => {
   img.src = src
 })
 
-export default function ForecastTable({ forecast, property }) {
+export default function ForecastTable({ forecast, property, zoneName }) {
   const totalRevenue = forecast.reduce((s, m) => s + m.revenue, 0)
   const totalNights  = forecast.reduce((s, m) => s + m.nightsBooked, 0)
   const avgOcc       = Math.round(forecast.reduce((s, m) => s + m.occupancyRate, 0) / 12)
@@ -35,32 +35,43 @@ export default function ForecastTable({ forecast, property }) {
     let logoImg = null
     try { logoImg = await loadImage('/logo.png') } catch (_) { /* logo absent, on ignore */ }
 
-    // ── En-tête teal ──
+    // ── En-tête teal (titre + logo seulement) ──
     doc.setFillColor(...TEAL)
-    doc.rect(0, 0, pageWidth, 48, 'F')
+    doc.rect(0, 0, pageWidth, 36, 'F')
 
     if (logoImg) {
-      doc.addImage(logoImg, 'PNG', margin, 6, 36, 36)
+      doc.addImage(logoImg, 'PNG', margin, 4, 28, 28)
     }
 
     doc.setTextColor(255, 255, 255)
     doc.setFont('helvetica', 'bold')
-    doc.setFontSize(15)
-    doc.text('PRÉVISIONNEL DE LOCATION SAISONNIÈRE', pageWidth / 2, 18, { align: 'center' })
-    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(14)
+    doc.text('PRÉVISIONNEL DE LOCATION SAISONNIÈRE', pageWidth / 2, 21, { align: 'center' })
+
+    // ── Bloc propriétaire (sous le header, fond blanc encadré) ──
+    let y = 42
+    doc.setFillColor(255, 255, 255)
+    doc.setDrawColor(...TEAL)
+    doc.roundedRect(margin, y, pageWidth - margin * 2, 22, 2, 2, 'FD')
+
+    doc.setTextColor(31, 41, 55)
+    doc.setFont('helvetica', 'bold')
     doc.setFontSize(10)
-    if (property.adresse)      doc.text(property.adresse,                         pageWidth / 2, 29, { align: 'center' })
-    if (property.proprietaire) doc.text(`Propriétaire : ${property.proprietaire}`, pageWidth / 2, 38, { align: 'center' })
+    doc.text(property.proprietaire || '–', margin + 4, y + 8)
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(9)
+    doc.setTextColor(80, 80, 80)
+    doc.text(property.adresse || '–', margin + 4, y + 16)
 
     // ── Fiche bien ──
-    let y = 56
+    y += 28
     doc.setFillColor(243, 244, 246)
     doc.roundedRect(margin, y, pageWidth - margin * 2, property.extras.length ? 24 : 16, 2, 2, 'F')
     doc.setTextColor(31, 41, 55)
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(9)
     const infoLine = [
-      `Zone : ${forecast[0]?.zone ?? property.zone}`,
+      `Zone : ${zoneName ?? property.zone}`,
       `Style : ${STYLE_LABELS[property.style] ?? property.style}`,
       `${property.chambres} chambre${property.chambres > 1 ? 's' : ''}`,
       `${property.capacite} personnes`,
