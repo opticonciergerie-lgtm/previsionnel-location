@@ -1,0 +1,123 @@
+import { useMemo } from 'react'
+
+const STYLES = [
+  { value: 'classique', label: 'Classique' },
+  { value: 'luxe',      label: 'Luxe / Premium' },
+  { value: 'atypique',  label: 'Atypique / Original' },
+]
+
+const EXTRAS = [
+  { value: 'piscine',       label: '🏊 Piscine' },
+  { value: 'vue_mer',       label: '🌊 Vue mer' },
+  { value: 'terrasse',      label: '🌿 Grande terrasse' },
+  { value: 'parking',       label: '🚗 Parking privatif' },
+  { value: 'jacuzzi',       label: '🛁 Jacuzzi / Spa' },
+  { value: 'climatisation', label: '❄️ Climatisation' },
+]
+
+export default function PropertyForm({ property, onChange, referenceData }) {
+  const zones = useMemo(() => {
+    const seen = new Set()
+    return referenceData
+      .filter(r => { const k = r.zone; if (seen.has(k)) return false; seen.add(k); return true })
+      .map(r => ({ value: r.zone, label: r.zoneName }))
+  }, [referenceData])
+
+  const set = (key, value) => onChange({ ...property, [key]: value })
+
+  const toggleExtra = extra => {
+    const next = property.extras.includes(extra)
+      ? property.extras.filter(e => e !== extra)
+      : [...property.extras, extra]
+    set('extras', next)
+  }
+
+  return (
+    <div className="property-form">
+      <h2>Informations du bien</h2>
+
+      <div className="form-group">
+        <label>Nom du propriétaire</label>
+        <input
+          type="text"
+          value={property.proprietaire}
+          onChange={e => set('proprietaire', e.target.value)}
+          placeholder="M. / Mme Dupont"
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Adresse du bien</label>
+        <input
+          type="text"
+          value={property.adresse}
+          onChange={e => set('adresse', e.target.value)}
+          placeholder="12 rue de la Plage, Les Sables d'Olonne"
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Zone</label>
+        <select value={property.zone} onChange={e => set('zone', e.target.value)}>
+          {zones.map(z => (
+            <option key={z.value} value={z.value}>{z.label}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label>Style du bien</label>
+        <div className="radio-group">
+          {STYLES.map(s => (
+            <label key={s.value} className={`radio-card ${property.style === s.value ? 'active' : ''}`}>
+              <input
+                type="radio"
+                name="style"
+                value={s.value}
+                checked={property.style === s.value}
+                onChange={() => set('style', s.value)}
+              />
+              {s.label}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label>Chambres</label>
+          <select value={property.chambres} onChange={e => set('chambres', Number(e.target.value))}>
+            {[1, 2, 3, 4, 5, 6].map(n => (
+              <option key={n} value={n}>{n} chambre{n > 1 ? 's' : ''}</option>
+            ))}
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label>Capacité d'accueil</label>
+          <div className="capacity-input">
+            <button type="button" onClick={() => set('capacite', Math.max(1, property.capacite - 1))}>−</button>
+            <span>{property.capacite} pers.</span>
+            <button type="button" onClick={() => set('capacite', Math.min(16, property.capacite + 1))}>+</button>
+          </div>
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label>Prestations incluses <span className="label-hint">(impact sur prix &amp; remplissage)</span></label>
+        <div className="extras-grid">
+          {EXTRAS.map(e => (
+            <label key={e.value} className={`extra-chip ${property.extras.includes(e.value) ? 'active' : ''}`}>
+              <input
+                type="checkbox"
+                checked={property.extras.includes(e.value)}
+                onChange={() => toggleExtra(e.value)}
+              />
+              {e.label}
+            </label>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
