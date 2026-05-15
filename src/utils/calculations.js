@@ -17,21 +17,19 @@ function getCapacityMult(capacite) {
 
 // Impact des prestations sur le prix et le taux de remplissage
 const EXTRAS_PRICE = {
-  piscine:       0.15,
-  vue_mer:       0.20,
-  terrasse:      0.08,
-  parking:       0.05,
-  jacuzzi:       0.12,
-  climatisation: 0.05,
+  piscine: 0.15,
+  vue_mer: 0.20,
+  jardin:  0.07,
+  parking: 0.05,
+  jacuzzi: 0.12,
 }
 
 const EXTRAS_OCC = {
-  piscine:       0.05,
-  vue_mer:       0.08,
-  terrasse:      0.03,
-  parking:       0.02,
-  jacuzzi:       0.04,
-  climatisation: 0.03,
+  piscine: 0.05,
+  vue_mer: 0.08,
+  jardin:  0.03,
+  parking: 0.02,
+  jacuzzi: 0.04,
 }
 
 export function computeForecast(property, referenceData) {

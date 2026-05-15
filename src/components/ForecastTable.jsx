@@ -3,8 +3,8 @@ import autoTable from 'jspdf-autotable'
 
 const STYLE_LABELS = { classique: 'Classique', luxe: 'Luxe / Premium', atypique: 'Atypique / Original' }
 const EXTRA_LABELS = {
-  piscine: 'Piscine', vue_mer: 'Vue mer', terrasse: 'Grande terrasse',
-  parking: 'Parking', jacuzzi: 'Jacuzzi / Spa', climatisation: 'Climatisation',
+  piscine: 'Piscine', vue_mer: 'Vue mer', jardin: 'Jardin',
+  parking: 'Parking', jacuzzi: 'Jacuzzi / Spa',
 }
 
 // Formatage des montants sans espace insécable (évite le bug "/" dans jsPDF)

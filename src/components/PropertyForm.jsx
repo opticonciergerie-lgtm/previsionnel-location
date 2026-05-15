@@ -7,12 +7,11 @@ const STYLES = [
 ]
 
 const EXTRAS = [
-  { value: 'piscine',       label: '🏊 Piscine' },
-  { value: 'vue_mer',       label: '🌊 Vue mer' },
-  { value: 'terrasse',      label: '🌿 Grande terrasse' },
-  { value: 'parking',       label: '🚗 Parking privatif' },
-  { value: 'jacuzzi',       label: '🛁 Jacuzzi / Spa' },
-  { value: 'climatisation', label: '❄️ Climatisation' },
+  { value: 'piscine', label: '🏊 Piscine' },
+  { value: 'vue_mer', label: '🌊 Vue mer' },
+  { value: 'jardin',  label: '🌿 Jardin' },
+  { value: 'parking', label: '🚗 Parking privatif' },
+  { value: 'jacuzzi', label: '🛁 Jacuzzi / Spa' },
 ]
 
 export default function PropertyForm({ property, onChange, referenceData }) {
