@@ -58,7 +58,6 @@ export default function ForecastTable({ forecast, property, zoneName }) {
     let y = 54
 
     // ── Fiche bien ──
-    y += 28
     doc.setFillColor(243, 244, 246)
     doc.roundedRect(margin, y, pageWidth - margin * 2, property.extras.length ? 24 : 16, 2, 2, 'F')
     doc.setTextColor(31, 41, 55)
