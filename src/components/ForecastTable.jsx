@@ -35,33 +35,27 @@ export default function ForecastTable({ forecast, property, zoneName }) {
     let logoImg = null
     try { logoImg = await loadImage('/logo.png') } catch (_) { /* logo absent, on ignore */ }
 
-    // ── En-tête teal (titre + logo seulement) ──
+    // ── En-tête teal (titre + propriétaire + adresse) ──
     doc.setFillColor(...TEAL)
-    doc.rect(0, 0, pageWidth, 36, 'F')
+    doc.rect(0, 0, pageWidth, 52, 'F')
 
     if (logoImg) {
-      doc.addImage(logoImg, 'PNG', margin, 4, 28, 28)
+      doc.addImage(logoImg, 'PNG', margin, 6, 28, 28)
     }
 
     doc.setTextColor(255, 255, 255)
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(14)
-    doc.text('PRÉVISIONNEL DE LOCATION SAISONNIÈRE', pageWidth / 2, 21, { align: 'center' })
+    doc.text('PRÉVISIONNEL DE LOCATION SAISONNIÈRE', pageWidth / 2, 17, { align: 'center' })
 
-    // ── Bloc propriétaire (sous le header, fond blanc encadré) ──
-    let y = 42
-    doc.setFillColor(255, 255, 255)
-    doc.setDrawColor(...TEAL)
-    doc.roundedRect(margin, y, pageWidth - margin * 2, 22, 2, 2, 'FD')
+    doc.setFontSize(11)
+    doc.text(property.proprietaire || '', pageWidth / 2, 30, { align: 'center' })
 
-    doc.setTextColor(31, 41, 55)
-    doc.setFont('helvetica', 'bold')
-    doc.setFontSize(10)
-    doc.text(property.proprietaire || '–', margin + 4, y + 8)
     doc.setFont('helvetica', 'normal')
-    doc.setFontSize(9)
-    doc.setTextColor(80, 80, 80)
-    doc.text(property.adresse || '–', margin + 4, y + 16)
+    doc.setFontSize(9.5)
+    doc.text(property.adresse || '', pageWidth / 2, 40, { align: 'center' })
+
+    let y = 58
 
     // ── Fiche bien ──
     y += 28
