@@ -55,7 +55,7 @@ export default function ForecastTable({ forecast, property, zoneName }) {
     doc.setFontSize(9.5)
     doc.text(property.adresse || '', pageWidth / 2, 40, { align: 'center' })
 
-    let y = 58
+    let y = 54
 
     // ── Fiche bien ──
     y += 28
