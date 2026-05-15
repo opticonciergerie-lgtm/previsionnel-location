@@ -15,6 +15,7 @@ export default function App() {
     chambres: 2,
     capacite: 4,
     extras: [],
+    formule: 'autonome',
   })
 
   const [referenceData, setReferenceData] = useState(defaultData)
@@ -23,11 +24,12 @@ export default function App() {
   const [showSettings, setShowSettings] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const forecast  = useMemo(() => computeForecast(property, referenceData), [property, referenceData])
-  const zoneName  = useMemo(
+  const forecast        = useMemo(() => computeForecast(property, referenceData), [property, referenceData])
+  const zoneName        = useMemo(
     () => referenceData.find(r => r.zone === property.zone)?.zoneName ?? property.zone,
     [referenceData, property.zone]
   )
+  const commissionRate  = property.formule === 'presentielle' ? 0.24 : 0.20
 
   const handleLoadSheet = useCallback(async () => {
     if (!sheetUrl.trim()) return
@@ -106,8 +108,8 @@ export default function App() {
         <section className="results-panel">
           {forecast ? (
             <>
-              <AnnualSummary forecast={forecast} />
-              <ForecastTable forecast={forecast} property={property} zoneName={zoneName} />
+              <AnnualSummary forecast={forecast} commissionRate={commissionRate} />
+              <ForecastTable forecast={forecast} property={property} zoneName={zoneName} commissionRate={commissionRate} />
             </>
           ) : (
             <div className="no-data">

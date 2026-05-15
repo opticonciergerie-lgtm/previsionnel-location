@@ -117,6 +117,38 @@ export default function PropertyForm({ property, onChange, referenceData }) {
           ))}
         </div>
       </div>
+
+      <div className="form-group formule-group">
+        <label>Formule choisie</label>
+        <div className="radio-group">
+          <label className={`radio-card ${property.formule === 'autonome' ? 'active' : ''}`}>
+            <input
+              type="radio"
+              name="formule"
+              value="autonome"
+              checked={property.formule === 'autonome'}
+              onChange={() => set('formule', 'autonome')}
+            />
+            <div>
+              <span className="formule-nom">Entrée autonome</span>
+              <span className="formule-taux">20% de commission</span>
+            </div>
+          </label>
+          <label className={`radio-card ${property.formule === 'presentielle' ? 'active' : ''}`}>
+            <input
+              type="radio"
+              name="formule"
+              value="presentielle"
+              checked={property.formule === 'presentielle'}
+              onChange={() => set('formule', 'presentielle')}
+            />
+            <div>
+              <span className="formule-nom">Entrée présentielle</span>
+              <span className="formule-taux">24% de commission</span>
+            </div>
+          </label>
+        </div>
+      </div>
     </div>
   )
 }

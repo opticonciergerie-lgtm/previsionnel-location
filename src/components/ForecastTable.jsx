@@ -19,11 +19,13 @@ const loadImage = src => new Promise((resolve, reject) => {
   img.src = src
 })
 
-export default function ForecastTable({ forecast, property, zoneName }) {
+export default function ForecastTable({ forecast, property, zoneName, commissionRate }) {
   const totalRevenue = forecast.reduce((s, m) => s + m.revenue, 0)
   const totalNights  = forecast.reduce((s, m) => s + m.nightsBooked, 0)
   const avgOcc       = Math.round(forecast.reduce((s, m) => s + m.occupancyRate, 0) / 12)
-  const netRevenue   = Math.round(totalRevenue * 0.80)
+  const netRevenue   = Math.round(totalRevenue * (1 - commissionRate))
+  const pct          = Math.round(commissionRate * 100)
+  const formuleLabel = property.formule === 'presentielle' ? 'Entrée présentielle' : 'Entrée autonome'
   const year         = new Date().getFullYear()
 
   const exportPDF = async () => {
@@ -37,7 +39,7 @@ export default function ForecastTable({ forecast, property, zoneName }) {
 
     // ── En-tête teal (titre + propriétaire + adresse) ──
     doc.setFillColor(...TEAL)
-    doc.rect(0, 0, pageWidth, 52, 'F')
+    doc.rect(0, 0, pageWidth, 38, 'F')
 
     if (logoImg) {
       doc.addImage(logoImg, 'PNG', margin, 6, 28, 28)
@@ -48,14 +50,11 @@ export default function ForecastTable({ forecast, property, zoneName }) {
     doc.setFontSize(14)
     doc.text('PRÉVISIONNEL DE LOCATION SAISONNIÈRE', pageWidth / 2, 17, { align: 'center' })
 
-    doc.setFontSize(11)
-    doc.text(property.proprietaire || '', pageWidth / 2, 30, { align: 'center' })
+    doc.setFontSize(10)
+    const ownerLine = [property.proprietaire, property.adresse].filter(Boolean).join('   –   ')
+    doc.text(ownerLine, pageWidth / 2, 30, { align: 'center' })
 
-    doc.setFont('helvetica', 'normal')
-    doc.setFontSize(9.5)
-    doc.text(property.adresse || '', pageWidth / 2, 40, { align: 'center' })
-
-    let y = 54
+    let y = 40
 
     // ── Fiche bien ──
     doc.setFillColor(243, 244, 246)
@@ -141,8 +140,8 @@ export default function ForecastTable({ forecast, property, zoneName }) {
 
     drawStat("Taux d'occupation moyen : ", `${avgOcc} %`,      col1, finalY + 22)
     drawStat("Nuits louées / an : ",       `${totalNights} nuits`, col1, finalY + 33)
-    drawStat("CA brut estimé : ",          fmtEur(totalRevenue),   col2, finalY + 22)
-    drawStat("Revenu net (après 20 %) : ", fmtEur(netRevenue),     col2, finalY + 33, true, TEAL)
+    drawStat("CA brut estimé : ",                       fmtEur(totalRevenue), col2, finalY + 22)
+    drawStat(`Revenu net (après ${pct}% - ${formuleLabel}) : `, fmtEur(netRevenue), col2, finalY + 33, true, TEAL)
 
     // ── Pied de page ──
     doc.setFont('helvetica', 'italic')

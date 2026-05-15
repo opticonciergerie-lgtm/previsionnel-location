@@ -355,6 +355,11 @@ body {
   border-top: 2px solid #e5e7eb;
 }
 
+/* ── Formule ── */
+.formule-group { margin-top: 20px; padding-top: 16px; border-top: 2px solid #f3f4f6; }
+.formule-nom  { display: block; font-weight: 600; font-size: 0.875rem; }
+.formule-taux { display: block; font-size: 0.75rem; opacity: 0.7; margin-top: 1px; }
+
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .annual-summary { grid-template-columns: repeat(2, 1fr); }
