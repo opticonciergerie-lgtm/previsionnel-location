@@ -13,10 +13,10 @@ body {
 
 /* ── Header ── */
 .app-header {
-  background: linear-gradient(135deg, #1a56db 0%, #1e40af 100%);
+  background: linear-gradient(135deg, #6abac1 0%, #4fa8b0 100%);
   color: #fff;
   padding: 0 24px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -27,10 +27,21 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 0;
+  padding: 10px 0;
 }
-.app-header h1 { font-size: 1.25rem; font-weight: 700; }
-.app-header p  { font-size: 0.82rem; opacity: 0.75; margin-top: 2px; }
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.header-logo {
+  height: 52px;
+  width: auto;
+  border-radius: 8px;
+  object-fit: contain;
+}
+.app-header h1 { font-size: 1.2rem; font-weight: 700; }
+.app-header p  { font-size: 0.82rem; opacity: 0.80; margin-top: 2px; }
 
 .btn-settings {
   background: rgba(255,255,255,0.15);
@@ -139,8 +150,8 @@ body {
 }
 .form-group input:focus,
 .form-group select:focus {
-  border-color: #1a56db;
-  box-shadow: 0 0 0 3px rgba(26,86,219,0.10);
+  border-color: #6abac1;
+  box-shadow: 0 0 0 3px rgba(106,186,193,0.18);
 }
 
 .form-row { display: flex; gap: 12px; }
@@ -160,9 +171,9 @@ body {
   color: #374151;
   transition: all 0.15s;
 }
-.radio-card:hover { border-color: #93c5fd; background: #eff6ff; }
-.radio-card.active { border-color: #1a56db; background: #eff6ff; color: #1e40af; font-weight: 600; }
-.radio-card input { accent-color: #1a56db; }
+.radio-card:hover { border-color: #6abac1; background: #f0fafb; }
+.radio-card.active { border-color: #6abac1; background: #e0f5f7; color: #2e8f96; font-weight: 600; }
+.radio-card input { accent-color: #6abac1; }
 
 /* Capacity stepper */
 .capacity-input {
@@ -207,8 +218,8 @@ body {
   white-space: nowrap;
   transition: all 0.15s;
 }
-.extra-chip:hover { border-color: #93c5fd; background: #eff6ff; }
-.extra-chip.active { border-color: #1a56db; background: #dbeafe; color: #1e40af; font-weight: 600; }
+.extra-chip:hover { border-color: #6abac1; background: #f0fafb; }
+.extra-chip.active { border-color: #6abac1; background: #e0f5f7; color: #2e8f96; font-weight: 600; }
 .extra-chip input { display: none; }
 
 /* ── Results panel ── */
@@ -238,7 +249,7 @@ body {
 .summary-card.highlight { border: 2px solid #bbf7d0; background: #f0fdf4; }
 .card-label { font-size: 0.72rem; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
 .card-value { font-size: 1.5rem; font-weight: 700; color: #111827; }
-.card-value.primary { color: #1a56db; }
+.card-value.primary { color: #6abac1; }
 .card-value.green   { color: #059669; }
 
 /* ── Forecast table ── */
@@ -258,7 +269,7 @@ body {
 .section-header h2 { font-size: 1rem; font-weight: 700; color: #1f2937; }
 
 .btn-export {
-  background: #1a56db;
+  background: #6abac1;
   color: #fff;
   border: none;
   padding: 9px 18px;
@@ -268,10 +279,10 @@ body {
   font-weight: 600;
   transition: background 0.2s;
 }
-.btn-export:hover { background: #1e40af; }
+.btn-export:hover { background: #4fa8b0; }
 
 .btn-primary {
-  background: #1a56db;
+  background: #6abac1;
   color: #fff;
   border: none;
   padding: 9px 16px;
@@ -282,7 +293,7 @@ body {
   white-space: nowrap;
   transition: background 0.2s;
 }
-.btn-primary:hover:not(:disabled) { background: #1e40af; }
+.btn-primary:hover:not(:disabled) { background: #4fa8b0; }
 .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .table-wrapper { overflow-x: auto; }
@@ -329,7 +340,7 @@ body {
 }
 .occ-fill {
   height: 100%;
-  background: linear-gradient(90deg, #60a5fa, #1a56db);
+  background: linear-gradient(90deg, #9de0e5, #6abac1);
   border-radius: 3px;
   transition: width 0.4s ease;
 }

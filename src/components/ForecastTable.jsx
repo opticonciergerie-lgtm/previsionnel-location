@@ -7,6 +7,18 @@ const EXTRA_LABELS = {
   parking: 'Parking', jacuzzi: 'Jacuzzi / Spa', climatisation: 'Climatisation',
 }
 
+// Formatage des montants sans espace insécable (évite le bug "/" dans jsPDF)
+const fmtEur = n => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €'
+
+const TEAL = [106, 186, 193]
+
+const loadImage = src => new Promise((resolve, reject) => {
+  const img = new Image()
+  img.onload = () => resolve(img)
+  img.onerror = reject
+  img.src = src
+})
+
 export default function ForecastTable({ forecast, property }) {
   const totalRevenue = forecast.reduce((s, m) => s + m.revenue, 0)
   const totalNights  = forecast.reduce((s, m) => s + m.nightsBooked, 0)
@@ -14,21 +26,30 @@ export default function ForecastTable({ forecast, property }) {
   const netRevenue   = Math.round(totalRevenue * 0.80)
   const year         = new Date().getFullYear()
 
-  const exportPDF = () => {
+  const exportPDF = async () => {
     const doc       = new jsPDF('p', 'mm', 'a4')
     const pageWidth = 210
     const margin    = 14
 
-    // ── En-tête bleu ──
-    doc.setFillColor(26, 86, 219)
+    // ── Logo ──
+    let logoImg = null
+    try { logoImg = await loadImage('/logo.png') } catch (_) { /* logo absent, on ignore */ }
+
+    // ── En-tête teal ──
+    doc.setFillColor(...TEAL)
     doc.rect(0, 0, pageWidth, 48, 'F')
+
+    if (logoImg) {
+      doc.addImage(logoImg, 'PNG', margin, 6, 36, 36)
+    }
+
     doc.setTextColor(255, 255, 255)
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(15)
     doc.text('PRÉVISIONNEL DE LOCATION SAISONNIÈRE', pageWidth / 2, 18, { align: 'center' })
     doc.setFont('helvetica', 'normal')
     doc.setFontSize(10)
-    if (property.adresse)      doc.text(property.adresse, pageWidth / 2, 29, { align: 'center' })
+    if (property.adresse)      doc.text(property.adresse,                         pageWidth / 2, 29, { align: 'center' })
     if (property.proprietaire) doc.text(`Propriétaire : ${property.proprietaire}`, pageWidth / 2, 38, { align: 'center' })
 
     // ── Fiche bien ──
@@ -54,7 +75,7 @@ export default function ForecastTable({ forecast, property }) {
     // ── Titre tableau ──
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(11)
-    doc.setTextColor(26, 86, 219)
+    doc.setTextColor(...TEAL)
     doc.text(`PRÉVISIONNEL MENSUEL ${year}`, margin, y)
     y += 5
 
@@ -65,13 +86,13 @@ export default function ForecastTable({ forecast, property }) {
       body: forecast.map(m => [
         m.month,
         `${m.occupancyRate} %`,
-        `${m.nightly_price.toLocaleString('fr-FR')} €`,
+        fmtEur(m.nightly_price),
         `${m.nightsBooked} nuits`,
-        `${m.revenue.toLocaleString('fr-FR')} €`,
+        fmtEur(m.revenue),
       ]),
       theme: 'grid',
       styles: { fontSize: 9, cellPadding: 3.5 },
-      headStyles: { fillColor: [26, 86, 219], textColor: 255, fontStyle: 'bold' },
+      headStyles: { fillColor: TEAL, textColor: 255, fontStyle: 'bold' },
       columnStyles: {
         0: { fontStyle: 'bold', cellWidth: 30 },
         1: { halign: 'center', cellWidth: 34 },
@@ -81,24 +102,23 @@ export default function ForecastTable({ forecast, property }) {
       },
       alternateRowStyles: { fillColor: [249, 250, 251] },
       margin: { left: margin, right: margin },
-      // Mise en valeur haute saison (juillet = index 6, août = 7)
       didParseCell: data => {
         if (data.section === 'body' && (data.row.index === 6 || data.row.index === 7)) {
-          data.cell.styles.fillColor = [239, 246, 255]
+          data.cell.styles.fillColor = [224, 247, 248]
         }
       },
     })
 
     // ── Récapitulatif annuel ──
     const finalY = doc.lastAutoTable.finalY + 8
-    doc.setFillColor(240, 253, 244)
+    doc.setFillColor(224, 247, 248)
     doc.roundedRect(margin, finalY, pageWidth - margin * 2, 46, 3, 3, 'F')
-    doc.setDrawColor(167, 243, 208)
+    doc.setDrawColor(...TEAL)
     doc.roundedRect(margin, finalY, pageWidth - margin * 2, 46, 3, 3, 'S')
 
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(11)
-    doc.setTextColor(5, 150, 105)
+    doc.setTextColor(...TEAL)
     doc.text('RÉCAPITULATIF ANNUEL', margin + 4, finalY + 10)
 
     doc.setFontSize(9.5)
@@ -115,10 +135,10 @@ export default function ForecastTable({ forecast, property }) {
       doc.setTextColor(31, 41, 55)
     }
 
-    drawStat("Taux d'occupation moyen : ", `${avgOcc} %`,               col1, finalY + 22)
-    drawStat("Nuits louées / an : ",       `${totalNights} nuits`,       col1, finalY + 33)
-    drawStat("CA brut estimé : ",          `${totalRevenue.toLocaleString('fr-FR')} €`, col2, finalY + 22)
-    drawStat("Revenu net (après 20 %) : ", `${netRevenue.toLocaleString('fr-FR')} €`,   col2, finalY + 33, true, [5, 150, 105])
+    drawStat("Taux d'occupation moyen : ", `${avgOcc} %`,      col1, finalY + 22)
+    drawStat("Nuits louées / an : ",       `${totalNights} nuits`, col1, finalY + 33)
+    drawStat("CA brut estimé : ",          fmtEur(totalRevenue),   col2, finalY + 22)
+    drawStat("Revenu net (après 20 %) : ", fmtEur(netRevenue),     col2, finalY + 33, true, TEAL)
 
     // ── Pied de page ──
     doc.setFont('helvetica', 'italic')

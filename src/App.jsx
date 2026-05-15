@@ -51,9 +51,12 @@ export default function App() {
       {/* ── Header ── */}
       <header className="app-header">
         <div className="header-content">
-          <div>
-            <h1>Prévisionnel Location Saisonnière</h1>
-            <p>Estimation personnalisée · Les Sables d'Olonne</p>
+          <div className="header-left">
+            <img src="/logo.png" alt="Opti Conciergerie" className="header-logo" />
+            <div>
+              <h1>Prévisionnel Location Saisonnière</h1>
+              <p>Estimation personnalisée · Vendée Littoral</p>
+            </div>
           </div>
           <button className="btn-settings" onClick={() => setShowSettings(v => !v)}>
             ⚙ Paramètres
