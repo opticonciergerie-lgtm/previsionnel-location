@@ -55,58 +55,6 @@ export const defaultData = [
     price_coeffs: [0.58, 0.62, 0.68, 0.82, 0.90, 1.08, 1.48, 1.55, 1.03, 0.76, 0.58, 0.68],
   },
 
-  // ── CHÂTEAU D'OLONNE ──
-  {
-    zone: 'chateau-olonne',
-    zoneName: "Château d'Olonne",
-    style: 'classique',
-    prix_base: 49,
-    occupancy:    [20, 25, 32, 50, 60, 75, 87, 90, 68, 40, 20, 25],
-    price_coeffs: [0.53, 0.58, 0.63, 0.80, 0.88, 1.08, 1.50, 1.58, 1.02, 0.72, 0.53, 0.63],
-  },
-  {
-    zone: 'chateau-olonne',
-    zoneName: "Château d'Olonne",
-    style: 'luxe',
-    prix_base: 83,
-    occupancy:    [18, 22, 28, 46, 56, 72, 84, 87, 64, 36, 18, 22],
-    price_coeffs: [0.53, 0.58, 0.63, 0.80, 0.88, 1.08, 1.48, 1.55, 1.00, 0.72, 0.53, 0.63],
-  },
-  {
-    zone: 'chateau-olonne',
-    zoneName: "Château d'Olonne",
-    style: 'atypique',
-    prix_base: 72,
-    occupancy:    [25, 30, 38, 56, 65, 78, 88, 91, 70, 46, 25, 32],
-    price_coeffs: [0.55, 0.60, 0.65, 0.82, 0.90, 1.08, 1.48, 1.55, 1.02, 0.74, 0.55, 0.65],
-  },
-
-  // ── OLONNE SUR MER ──
-  {
-    zone: 'olonne-sur-mer',
-    zoneName: 'Olonne sur Mer',
-    style: 'classique',
-    prix_base: 48,
-    occupancy:    [18, 23, 30, 48, 58, 73, 85, 88, 65, 38, 18, 23],
-    price_coeffs: [0.52, 0.57, 0.62, 0.78, 0.87, 1.06, 1.48, 1.55, 1.00, 0.70, 0.52, 0.62],
-  },
-  {
-    zone: 'olonne-sur-mer',
-    zoneName: 'Olonne sur Mer',
-    style: 'luxe',
-    prix_base: 80,
-    occupancy:    [15, 20, 26, 44, 54, 70, 82, 85, 62, 34, 15, 20],
-    price_coeffs: [0.52, 0.57, 0.62, 0.78, 0.87, 1.06, 1.45, 1.52, 0.98, 0.70, 0.52, 0.62],
-  },
-  {
-    zone: 'olonne-sur-mer',
-    zoneName: 'Olonne sur Mer',
-    style: 'atypique',
-    prix_base: 71,
-    occupancy:    [22, 28, 35, 54, 63, 75, 86, 89, 67, 44, 23, 30],
-    price_coeffs: [0.54, 0.59, 0.64, 0.80, 0.88, 1.06, 1.46, 1.53, 1.00, 0.72, 0.54, 0.64],
-  },
-
   // ── LA TRANCHE SUR MER ──
   {
     zone: 'tranche-sur-mer',
@@ -159,29 +107,4 @@ export const defaultData = [
     price_coeffs: [0.52, 0.56, 0.62, 0.80, 0.90, 1.10, 1.56, 1.63, 1.02, 0.72, 0.52, 0.60],
   },
 
-  // ── PÉRIPHÉRIE / CAMPAGNE ──
-  {
-    zone: 'peripherie',
-    zoneName: "Les Sables d'Olonne – Périphérie / Campagne",
-    style: 'classique',
-    prix_base: 46,
-    occupancy:    [18, 22, 28, 48, 58, 72, 85, 90, 65, 38, 18, 22],
-    price_coeffs: [0.52, 0.58, 0.62, 0.78, 0.85, 1.05, 1.45, 1.55, 1.00, 0.70, 0.52, 0.62],
-  },
-  {
-    zone: 'peripherie',
-    zoneName: "Les Sables d'Olonne – Périphérie / Campagne",
-    style: 'luxe',
-    prix_base: 78,
-    occupancy:    [15, 20, 25, 45, 55, 70, 82, 87, 62, 35, 15, 20],
-    price_coeffs: [0.52, 0.58, 0.62, 0.78, 0.85, 1.05, 1.45, 1.52, 0.98, 0.70, 0.52, 0.62],
-  },
-  {
-    zone: 'peripherie',
-    zoneName: "Les Sables d'Olonne – Périphérie / Campagne",
-    style: 'atypique',
-    prix_base: 69,
-    occupancy:    [22, 28, 35, 55, 65, 75, 87, 92, 68, 45, 25, 32],
-    price_coeffs: [0.55, 0.60, 0.65, 0.80, 0.88, 1.05, 1.45, 1.52, 1.00, 0.73, 0.55, 0.65],
-  },
 ]
