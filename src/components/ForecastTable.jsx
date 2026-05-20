@@ -148,7 +148,7 @@ export default function ForecastTable({ forecast, property, zoneName, commission
     doc.setFontSize(7.5)
     doc.setTextColor(156, 163, 175)
     doc.text(
-      `Estimation établie le ${new Date().toLocaleDateString('fr-FR')} · Les résultats réels peuvent varier selon le marché et la gestion du bien.`,
+      `Estimation établie le ${new Date().toLocaleDateString('fr-FR')} · Les résultats réels peuvent varier selon le marché, la localisation exacte et la stratégie de location.`,
       pageWidth / 2, 287, { align: 'center' }
     )
 
