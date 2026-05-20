@@ -63,7 +63,6 @@ export default function App() {
       {/* ── Barre d'information ── */}
       <div className="top-bar">
         <div className="top-bar-content">
-          <span>📍 Réseau de conciergeries · Vendée Littoral</span>
           <span>🕐 Lundi – Dimanche · 8h–19h</span>
           <span>📞 <a href="tel:0780531313">07 80 53 13 13</a></span>
           <span>✉ <a href="mailto:opti.conciergerie@gmail.com">opti.conciergerie@gmail.com</a></span>
