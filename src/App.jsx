@@ -18,18 +18,18 @@ export default function App() {
     formule: 'autonome',
   })
 
-  const [referenceData, setReferenceData] = useState(defaultData)
-  const [sheetUrl, setSheetUrl]     = useState(() => localStorage.getItem('sheetUrl') ?? '')
-  const [sheetStatus, setSheetStatus] = useState('')
-  const [showSettings, setShowSettings] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [referenceData, setReferenceData]   = useState(defaultData)
+  const [sheetUrl, setSheetUrl]             = useState(() => localStorage.getItem('sheetUrl') ?? '')
+  const [sheetStatus, setSheetStatus]       = useState('')
+  const [showSettings, setShowSettings]     = useState(false)
+  const [loading, setLoading]               = useState(false)
 
-  const forecast        = useMemo(() => computeForecast(property, referenceData), [property, referenceData])
-  const zoneName        = useMemo(
+  const forecast       = useMemo(() => computeForecast(property, referenceData), [property, referenceData])
+  const zoneName       = useMemo(
     () => referenceData.find(r => r.zone === property.zone)?.zoneName ?? property.zone,
     [referenceData, property.zone]
   )
-  const commissionRate  = property.formule === 'presentielle' ? 0.24 : 0.20
+  const commissionRate = property.formule === 'presentielle' ? 0.24 : 0.20
 
   const handleLoadSheet = useCallback(async () => {
     if (!sheetUrl.trim()) return
@@ -52,21 +52,68 @@ export default function App() {
     setSheetStatus('Données par défaut restaurées.')
   }
 
+  const scrollToEstimation = (e) => {
+    e.preventDefault()
+    document.getElementById('estimation')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <div className="app">
-      {/* ── Header ── */}
-      <header className="app-header">
-        <div className="header-content">
-          <div className="header-left">
-            <img src="/logo.png" alt="Opti Conciergerie" className="header-logo" />
-            <div>
-              <h1>Prévisionnel Location Saisonnière</h1>
-              <p>Estimation personnalisée · Vendée Littoral</p>
+
+      {/* ── Barre d'information ── */}
+      <div className="top-bar">
+        <div className="top-bar-content">
+          <span>📍 Réseau de conciergeries · Vendée Littoral</span>
+          <span>🕐 Lundi – Dimanche · 8h–19h</span>
+          <span>📞 <a href="tel:0780531313">07 80 53 13 13</a></span>
+          <span>✉ <a href="mailto:opti.conciergerie@gmail.com">opti.conciergerie@gmail.com</a></span>
+        </div>
+      </div>
+
+      {/* ── Hero ── */}
+      <header className="hero">
+        <div className="hero-overlay">
+
+          {/* Nav dans le hero */}
+          <nav className="hero-nav">
+            <img src="/logo.png" alt="Opti Conciergerie" className="hero-logo" />
+            <button className="btn-settings-hero" onClick={() => setShowSettings(v => !v)}>
+              ⚙ Paramètres
+            </button>
+          </nav>
+
+          {/* Contenu central */}
+          <div className="hero-content">
+            <p className="hero-eyebrow">Opti Conciergerie · Estimation gratuite</p>
+            <h1>
+              Calculez le potentiel de votre bien<br />
+              <span className="hero-accent">en location saisonnière</span>
+            </h1>
+            <p className="hero-sub">
+              Renseignez les caractéristiques de votre logement et obtenez en quelques secondes
+              une projection mensuelle réaliste de votre chiffre d'affaires.
+            </p>
+            <div className="hero-ctas">
+              <a href="#estimation" className="btn-hero-primary" onClick={scrollToEstimation}>
+                Commencer l'estimation →
+              </a>
+              <a href="tel:0780531313" className="btn-hero-secondary">
+                📞 Nous contacter
+              </a>
+              <a href="https://opti-conciergerie.com" target="_blank" rel="noreferrer" className="btn-hero-ghost">
+                Voir notre site
+              </a>
             </div>
           </div>
-          <button className="btn-settings" onClick={() => setShowSettings(v => !v)}>
-            ⚙ Paramètres
-          </button>
+
+          {/* Badges de confiance */}
+          <div className="hero-badges">
+            <span className="badge">✓ 100% gratuit</span>
+            <span className="badge">✓ Sans engagement</span>
+            <span className="badge">✓ Résultats instantanés</span>
+            <span className="badge">✓ Export PDF inclus</span>
+          </div>
+
         </div>
       </header>
 
@@ -96,7 +143,7 @@ export default function App() {
       )}
 
       {/* ── Contenu principal ── */}
-      <main className="app-main">
+      <main id="estimation" className="app-main">
         <aside className="form-panel">
           <PropertyForm
             property={property}
@@ -119,6 +166,52 @@ export default function App() {
           )}
         </section>
       </main>
+
+      {/* ── CTA Contact ── */}
+      <section className="cta-section">
+        <div className="cta-block">
+          <div className="cta-left">
+            <p className="cta-eyebrow">Vous souhaitez en savoir plus ?</p>
+            <h2 className="cta-title">Contactez-nous<br />dès maintenant.</h2>
+            <p className="cta-sub">
+              Échangeons sur votre bien ou votre projet de location.<br />
+              Nous sommes joignables 7j/7, par téléphone ou par mail.
+            </p>
+          </div>
+          <div className="cta-right">
+            <a href="tel:0780531313" className="cta-card">
+              <span className="cta-card-icon phone">📞</span>
+              <div>
+                <span className="cta-card-label">Téléphone</span>
+                <span className="cta-card-value">07 80 53 13 13</span>
+              </div>
+              <span className="cta-card-arrow">›</span>
+            </a>
+            <a href="mailto:opti.conciergerie@gmail.com" className="cta-card">
+              <span className="cta-card-icon mail">✉</span>
+              <div>
+                <span className="cta-card-label">Email</span>
+                <span className="cta-card-value">opti.conciergerie@gmail.com</span>
+              </div>
+              <span className="cta-card-arrow">›</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Footer ── */}
+      <footer className="app-footer">
+        <div className="footer-content">
+          <img src="/logo.png" alt="Opti Conciergerie" className="footer-logo" />
+          <div className="footer-links">
+            <a href="https://opti-conciergerie.com" target="_blank" rel="noreferrer">opti-conciergerie.com</a>
+            <a href="tel:0780531313">07 80 53 13 13</a>
+            <a href="mailto:opti.conciergerie@gmail.com">opti.conciergerie@gmail.com</a>
+          </div>
+          <p className="footer-legal">Les estimations fournies sont indicatives et basées sur les données du marché local.</p>
+        </div>
+      </footer>
+
     </div>
   )
 }
