@@ -19,7 +19,7 @@ const loadImage = src => new Promise((resolve, reject) => {
   img.src = src
 })
 
-export default function ForecastTable({ forecast, property, zoneName, commissionRate }) {
+export default function ForecastTable({ forecast, property, zoneName, commissionRate, unlocked }) {
   const totalRevenue = forecast.reduce((s, m) => s + m.revenue, 0)
   const totalNights  = forecast.reduce((s, m) => s + m.nightsBooked, 0)
   const avgOcc       = Math.round(forecast.reduce((s, m) => s + m.occupancyRate, 0) / 12)
@@ -29,6 +29,8 @@ export default function ForecastTable({ forecast, property, zoneName, commission
   const year         = new Date().getFullYear()
 
   const exportPDF = async () => {
+    if (!unlocked) return
+
     const doc       = new jsPDF('p', 'mm', 'a4')
     const pageWidth = 210
     const margin    = 14
@@ -160,10 +162,17 @@ export default function ForecastTable({ forecast, property, zoneName, commission
     <div className="forecast-table-section">
       <div className="section-header">
         <h2>Prévisionnel mensuel {year}</h2>
-        <button className="btn-export" onClick={exportPDF}>↓ Exporter PDF</button>
+        <button
+          className={`btn-export ${!unlocked ? 'btn-export-locked' : ''}`}
+          onClick={exportPDF}
+          title={unlocked ? 'Exporter en PDF' : 'Renseignez vos coordonnées pour déverrouiller'}
+        >
+          {unlocked ? '↓ Exporter PDF' : '🔒 Exporter PDF'}
+        </button>
       </div>
 
-      <div className="table-wrapper">
+      {/* Wrapper avec overlay flou si non déverrouillé */}
+      <div className={`table-wrapper ${!unlocked ? 'table-locked' : ''}`}>
         <table className="forecast-table">
           <thead>
             <tr>
@@ -201,6 +210,17 @@ export default function ForecastTable({ forecast, property, zoneName, commission
             </tr>
           </tfoot>
         </table>
+
+        {/* Overlay de verrouillage */}
+        {!unlocked && (
+          <div className="lock-overlay">
+            <div className="lock-overlay-content">
+              <span className="lock-icon">🔒</span>
+              <p className="lock-title">Prévisionnel verrouillé</p>
+              <p className="lock-sub">Renseignez votre téléphone et votre e-mail dans le formulaire, puis cliquez sur <strong>« Voir le détail »</strong> pour accéder gratuitement à votre estimation complète.</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

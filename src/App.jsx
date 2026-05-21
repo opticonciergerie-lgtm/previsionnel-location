@@ -1,15 +1,23 @@
 import { useState, useMemo, useCallback } from 'react'
+import emailjs from '@emailjs/browser'
 import PropertyForm from './components/PropertyForm.jsx'
 import ForecastTable from './components/ForecastTable.jsx'
 import AnnualSummary from './components/AnnualSummary.jsx'
 import { computeForecast } from './utils/calculations.js'
 import { fetchSheetData, SHEET_COLUMNS } from './utils/googleSheets.js'
 import { defaultData } from './data/defaultData.js'
+import { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY } from './config/emailjs.js'
+
+const STYLE_LABELS   = { classique: 'Classique', luxe: 'Luxe / Premium', atypique: 'Atypique / Original' }
+const FORMULE_LABELS = { autonome: 'Entrée autonome (20%)', presentielle: 'Entrée présentielle (24%)' }
+const EXTRA_LABELS   = { piscine: 'Piscine', vue_mer: 'Vue mer', jardin: 'Jardin', parking: 'Parking', jacuzzi: 'Jacuzzi / Spa' }
 
 export default function App() {
   const [property, setProperty] = useState({
     proprietaire: '',
     adresse: '',
+    telephone: '',
+    email: '',
     zone: 'bord-mer',
     style: 'classique',
     chambres: 2,
@@ -17,6 +25,10 @@ export default function App() {
     extras: [],
     formule: 'autonome',
   })
+
+  const [unlocked,        setUnlocked]        = useState(false)
+  const [sendingLead,     setSendingLead]      = useState(false)
+  const [leadError,       setLeadError]        = useState('')
 
   const [referenceData, setReferenceData]   = useState(defaultData)
   const [sheetUrl, setSheetUrl]             = useState(() => localStorage.getItem('sheetUrl') ?? '')
@@ -30,6 +42,62 @@ export default function App() {
     [referenceData, property.zone]
   )
   const commissionRate = property.formule === 'presentielle' ? 0.24 : 0.20
+
+  // ── Déverrouillage + envoi du lead ──
+  const handleUnlock = useCallback(async () => {
+    const phone = property.telephone.trim()
+    const mail  = property.email.trim()
+
+    if (!phone) { setLeadError('Veuillez saisir votre numéro de téléphone.'); return }
+    if (!mail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
+      setLeadError('Veuillez saisir une adresse e-mail valide.'); return
+    }
+
+    setLeadError('')
+    setSendingLead(true)
+
+    const extrasStr = property.extras.length
+      ? property.extras.map(e => EXTRA_LABELS[e] ?? e).join(', ')
+      : 'Aucune'
+
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          proprietaire: property.proprietaire || '(non renseigné)',
+          adresse:      property.adresse      || '(non renseignée)',
+          telephone:    phone,
+          email:        mail,
+          zone:         zoneName,
+          style:        STYLE_LABELS[property.style]   ?? property.style,
+          chambres:     `${property.chambres} chambre${property.chambres > 1 ? 's' : ''}`,
+          capacite:     `${property.capacite} personnes`,
+          extras:       extrasStr,
+          formule:      FORMULE_LABELS[property.formule] ?? property.formule,
+        },
+        EMAILJS_PUBLIC_KEY
+      )
+    } catch (err) {
+      // On déverrouille quand même — l'email est secondaire,
+      // le prospect ne doit pas être bloqué par un problème réseau
+      console.warn('EmailJS error:', err)
+    }
+
+    setSendingLead(false)
+    setUnlocked(true)
+  }, [property, zoneName])
+
+  // Quand le formulaire change, si la personne modifie téléphone/email on re-verrouille
+  const handlePropertyChange = useCallback((next) => {
+    if (
+      unlocked &&
+      (next.telephone !== property.telephone || next.email !== property.email)
+    ) {
+      setUnlocked(false)
+    }
+    setProperty(next)
+  }, [unlocked, property.telephone, property.email])
 
   const handleLoadSheet = useCallback(async () => {
     if (!sheetUrl.trim()) return
@@ -146,16 +214,26 @@ export default function App() {
         <aside className="form-panel">
           <PropertyForm
             property={property}
-            onChange={setProperty}
+            onChange={handlePropertyChange}
             referenceData={referenceData}
+            unlocked={unlocked}
+            onUnlock={handleUnlock}
+            sending={sendingLead}
+            leadError={leadError}
           />
         </aside>
 
         <section className="results-panel">
           {forecast ? (
             <>
-              <AnnualSummary forecast={forecast} commissionRate={commissionRate} />
-              <ForecastTable forecast={forecast} property={property} zoneName={zoneName} commissionRate={commissionRate} />
+              <AnnualSummary forecast={forecast} commissionRate={commissionRate} unlocked={unlocked} />
+              <ForecastTable
+                forecast={forecast}
+                property={property}
+                zoneName={zoneName}
+                commissionRate={commissionRate}
+                unlocked={unlocked}
+              />
             </>
           ) : (
             <div className="no-data">

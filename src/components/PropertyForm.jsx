@@ -14,7 +14,7 @@ const EXTRAS = [
   { value: 'jacuzzi', label: '🛁 Jacuzzi / Spa' },
 ]
 
-export default function PropertyForm({ property, onChange, referenceData }) {
+export default function PropertyForm({ property, onChange, referenceData, unlocked, onUnlock, sending, leadError }) {
   const zones = useMemo(() => {
     const seen = new Set()
     return referenceData
@@ -53,6 +53,33 @@ export default function PropertyForm({ property, onChange, referenceData }) {
           onChange={e => set('adresse', e.target.value)}
           placeholder="12 rue de la Plage, Les Sables d'Olonne"
         />
+      </div>
+
+      {/* ── Coordonnées de contact ── */}
+      <div className="contact-block">
+        <div className="contact-block-title">📬 Vos coordonnées pour accéder au prévisionnel</div>
+
+        <div className="form-group">
+          <label>N° de téléphone <span className="label-required">*</span></label>
+          <input
+            type="tel"
+            value={property.telephone}
+            onChange={e => set('telephone', e.target.value)}
+            placeholder="06 00 00 00 00"
+            disabled={unlocked}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Adresse e-mail <span className="label-required">*</span></label>
+          <input
+            type="email"
+            value={property.email}
+            onChange={e => set('email', e.target.value)}
+            placeholder="vous@exemple.fr"
+            disabled={unlocked}
+          />
+        </div>
       </div>
 
       <div className="form-group">
@@ -149,6 +176,25 @@ export default function PropertyForm({ property, onChange, referenceData }) {
           </label>
         </div>
       </div>
+
+      {/* ── Bouton déverrouillage ── */}
+      {!unlocked ? (
+        <div className="unlock-block">
+          {leadError && <p className="lead-error">{leadError}</p>}
+          <button
+            className="btn-unlock"
+            onClick={onUnlock}
+            disabled={sending}
+          >
+            {sending ? '⏳ Envoi en cours…' : '🔓 Voir le détail de mon prévisionnel'}
+          </button>
+          <p className="unlock-hint">Accès gratuit · Sans engagement · Résultats immédiats</p>
+        </div>
+      ) : (
+        <div className="unlock-success">
+          ✅ Prévisionnel déverrouillé — vous pouvez consulter et exporter votre estimation.
+        </div>
+      )}
     </div>
   )
 }

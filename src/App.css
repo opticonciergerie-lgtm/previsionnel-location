@@ -559,3 +559,150 @@ body {
   .annual-summary { grid-template-columns: 1fr; }
   .hero-ctas { flex-direction: column; align-items: center; }
 }
+
+/* ══════════════════════════════
+   LEAD CAPTURE – CONTACT BLOCK
+══════════════════════════════ */
+.contact-block {
+  background: linear-gradient(135deg, #eef9fa 0%, #f0faf5 100%);
+  border: 1.5px solid #a8dce1;
+  border-radius: 12px;
+  padding: 16px 18px 8px;
+  margin-bottom: 18px;
+}
+.contact-block-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1a6a70;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.contact-block .form-group { margin-bottom: 10px; }
+.contact-block input:disabled {
+  background: #d1f5f7;
+  color: #1a6a70;
+  cursor: default;
+  font-weight: 600;
+}
+.label-required {
+  color: #e55;
+  font-size: 0.8rem;
+  margin-left: 2px;
+}
+
+/* ── Bouton déverrouillage ── */
+.unlock-block {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+.btn-unlock {
+  background: linear-gradient(135deg, #6abac1 0%, #3d9ea6 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 20px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 16px rgba(106,186,193,0.35);
+  transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+}
+.btn-unlock:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(106,186,193,0.45);
+}
+.btn-unlock:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.unlock-hint {
+  font-size: 0.75rem;
+  color: #6b7280;
+  text-align: center;
+}
+.lead-error {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+}
+.unlock-success {
+  margin-top: 18px;
+  background: #f0fdf4;
+  border: 1.5px solid #86efac;
+  border-radius: 10px;
+  padding: 12px 16px;
+  color: #166534;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ══════════════════════════════
+   TABLE LOCK OVERLAY
+══════════════════════════════ */
+.table-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.table-locked table {
+  filter: blur(5px);
+  user-select: none;
+  pointer-events: none;
+}
+.lock-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 10;
+  border-radius: 12px;
+}
+.lock-overlay-content {
+  background: #fff;
+  border: 1.5px solid #a8dce1;
+  border-radius: 16px;
+  padding: 28px 32px;
+  max-width: 340px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(26,64,64,0.12);
+}
+.lock-icon {
+  font-size: 2.2rem;
+  display: block;
+  margin-bottom: 10px;
+}
+.lock-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a4040;
+  margin-bottom: 8px;
+}
+.lock-sub {
+  font-size: 0.83rem;
+  color: #4b5563;
+  line-height: 1.55;
+}
+
+/* ── Bouton export verrouillé ── */
+.btn-export-locked {
+  background: #e5e7eb !important;
+  color: #9ca3af !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+}
+.btn-export-locked:hover {
+  transform: none !important;
+}
