@@ -663,11 +663,16 @@ body {
   overflow: hidden;
   border-radius: 12px;
 }
-.table-locked table {
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.table-locked .table-scroll {
   filter: blur(5px);
   user-select: none;
   pointer-events: none;
 }
+.forecast-table { min-width: 520px; }
 .lock-overlay {
   position: absolute;
   inset: 0;

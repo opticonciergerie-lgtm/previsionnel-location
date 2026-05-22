@@ -173,6 +173,7 @@ export default function ForecastTable({ forecast, property, zoneName, commission
 
       {/* Wrapper avec overlay flou si non déverrouillé */}
       <div className={`table-wrapper ${!unlocked ? 'table-locked' : ''}`}>
+        <div className="table-scroll">
         <table className="forecast-table">
           <thead>
             <tr>
@@ -210,6 +211,8 @@ export default function ForecastTable({ forecast, property, zoneName, commission
             </tr>
           </tfoot>
         </table>
+
+        </div>{/* fin table-scroll */}
 
         {/* Overlay de verrouillage */}
         {!unlocked && (
