@@ -217,7 +217,7 @@ export default function ForecastTable({ forecast, property, zoneName, commission
             <div className="lock-overlay-content">
               <span className="lock-icon">🔒</span>
               <p className="lock-title">Prévisionnel verrouillé</p>
-              <p className="lock-sub">Renseignez votre téléphone et votre e-mail dans le formulaire, puis cliquez sur <strong>« Voir le détail »</strong> pour accéder gratuitement à votre estimation complète.</p>
+              <p className="lock-sub">Renseignez vos coordonnées dans le formulaire, puis cliquez sur <strong>« Voir le détail »</strong> pour accéder gratuitement à votre estimation complète.</p>
             </div>
           </div>
         )}

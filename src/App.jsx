@@ -133,7 +133,7 @@ export default function App() {
         <div className="top-bar-content">
           <span>🕐 Lundi – Dimanche · 8h–19h</span>
           <span>📞 <a href="tel:0780531313">07 80 53 13 13</a></span>
-          <span>✉ <a href="mailto:opti.conciergerie@gmail.com">opti.conciergerie@gmail.com</a></span>
+          <span>✉ <a href="mailto:contact@opti-conciergerie.com">contact@opti-conciergerie.com</a></span>
         </div>
       </div>
 
@@ -264,11 +264,11 @@ export default function App() {
               </div>
               <span className="cta-card-arrow">›</span>
             </a>
-            <a href="mailto:opti.conciergerie@gmail.com" className="cta-card">
+            <a href="mailto:contact@opti-conciergerie.com" className="cta-card">
               <span className="cta-card-icon mail">✉</span>
               <div>
                 <span className="cta-card-label">Email</span>
-                <span className="cta-card-value">opti.conciergerie@gmail.com</span>
+                <span className="cta-card-value">contact@opti-conciergerie.com</span>
               </div>
               <span className="cta-card-arrow">›</span>
             </a>
@@ -283,7 +283,7 @@ export default function App() {
           <div className="footer-links">
             <a href="https://opti-conciergerie.com" target="_blank" rel="noreferrer">opti-conciergerie.com</a>
             <a href="tel:0780531313">07 80 53 13 13</a>
-            <a href="mailto:opti.conciergerie@gmail.com">opti.conciergerie@gmail.com</a>
+            <a href="mailto:contact@opti-conciergerie.com">contact@opti-conciergerie.com</a>
           </div>
           <p className="footer-legal">Les estimations fournies sont indicatives et basées sur les données du marché local.</p>
         </div>
