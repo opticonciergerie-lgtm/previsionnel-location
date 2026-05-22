@@ -150,9 +150,6 @@ export default function App() {
           {/* Nav dans le hero */}
           <nav className="hero-nav">
             <img src="/logo.png" alt="Opti Conciergerie" className="hero-logo" />
-            <button className="btn-settings-hero" onClick={() => setShowSettings(v => !v)}>
-              ⚙ Paramètres
-            </button>
           </nav>
 
           {/* Contenu central */}
