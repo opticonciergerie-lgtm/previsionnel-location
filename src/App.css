@@ -216,12 +216,17 @@ body {
 /* ══════════════════════════════
    FORM PANEL
 ══════════════════════════════ */
-.form-panel { width: 340px; flex-shrink: 0; }
+.form-panel {
+  width: 340px;
+  flex-shrink: 0;
+  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.app-main--locked .form-panel { width: 500px; }
 
 .property-form {
   background: #fff;
   border-radius: 12px;
-  padding: 24px;
+  padding: 20px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.08);
   position: sticky;
   top: 20px;
@@ -232,7 +237,7 @@ body {
   margin-bottom: 20px; color: #1f2937;
 }
 
-.form-group { margin-bottom: 16px; }
+.form-group { margin-bottom: 12px; }
 .form-group label {
   display: block; font-size: 0.75rem; font-weight: 700;
   color: #374151; text-transform: uppercase;
@@ -293,9 +298,11 @@ body {
 .extra-chip input { display: none; }
 
 /* Formule */
-.formule-group { margin-top: 20px; padding-top: 16px; border-top: 2px solid #f3f4f6; }
-.formule-nom  { display: block; font-weight: 600; font-size: 0.875rem; }
-.formule-taux { display: block; font-size: 0.75rem; opacity: 0.7; margin-top: 1px; }
+.formule-group { margin-top: 16px; padding-top: 14px; border-top: 2px solid #f3f4f6; }
+.formule-group .radio-group { flex-direction: row; gap: 8px; }
+.formule-group .radio-card  { flex: 1; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 12px; }
+.formule-nom  { display: block; font-weight: 600; font-size: 0.82rem; }
+.formule-taux { display: block; font-size: 0.72rem; opacity: 0.7; margin-top: 1px; }
 
 /* ══════════════════════════════
    RESULTS PANEL
@@ -544,8 +551,10 @@ body {
 }
 @media (max-width: 860px) {
   .app-main { flex-direction: column; padding: 16px; }
-  .form-panel { width: 100%; }
+  .form-panel,
+  .app-main--locked .form-panel { width: 100%; }
   .property-form { position: static; }
+  .formule-group .radio-group { flex-direction: column; }
   .hero-content h1 { font-size: 1.75rem; }
 }
 @media (max-width: 600px) {

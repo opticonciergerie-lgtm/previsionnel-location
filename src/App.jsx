@@ -210,7 +210,7 @@ export default function App() {
       )}
 
       {/* ── Contenu principal ── */}
-      <main id="estimation" className="app-main">
+      <main id="estimation" className={`app-main${unlocked ? '' : ' app-main--locked'}`}>
         <aside className="form-panel">
           <PropertyForm
             property={property}
