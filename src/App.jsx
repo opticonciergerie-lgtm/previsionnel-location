@@ -3,6 +3,7 @@ import emailjs from '@emailjs/browser'
 import PropertyForm from './components/PropertyForm.jsx'
 import ForecastTable from './components/ForecastTable.jsx'
 import AnnualSummary from './components/AnnualSummary.jsx'
+import PerformanceInsights from './components/PerformanceInsights.jsx'
 import { computeForecast } from './utils/calculations.js'
 import { fetchSheetData, SHEET_COLUMNS } from './utils/googleSheets.js'
 import { defaultData } from './data/defaultData.js'
@@ -236,6 +237,11 @@ export default function App() {
                 forecast={forecast}
                 property={property}
                 zoneName={zoneName}
+                commissionRate={commissionRate}
+                unlocked={unlocked}
+              />
+              <PerformanceInsights
+                forecast={forecast}
                 commissionRate={commissionRate}
                 unlocked={unlocked}
               />

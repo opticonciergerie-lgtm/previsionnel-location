@@ -570,6 +570,272 @@ body {
 }
 
 /* ══════════════════════════════
+   PERFORMANCE INSIGHTS
+══════════════════════════════ */
+.insights-section {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+/* En-tête dégradé */
+.insights-header {
+  background: linear-gradient(135deg, #1a4040 0%, #2a6060 100%);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.insights-header h2 {
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.insights-header p {
+  color: rgba(255,255,255,0.65);
+  font-size: 0.8rem;
+}
+
+/* Corps verrouillable */
+.insights-body {
+  position: relative;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.insights-locked {
+  min-height: 420px;
+}
+
+/* KPI Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.kpi-card {
+  position: relative;
+  background: #f8fafc;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 14px 14px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.kpi-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  transform: translateY(-1px);
+}
+.kpi-accent {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--kpi-color);
+  border-radius: 4px 0 0 4px;
+}
+.kpi-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.kpi-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.kpi-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.kpi-value {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1.2;
+}
+.kpi-sub {
+  font-size: 0.7rem;
+  color: #9ca3af;
+}
+
+/* Séparateur */
+.insights-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #9ca3af;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.insights-divider::before,
+.insights-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+/* Simulateur */
+.sim-block {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.sim-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 8px;
+}
+.sim-label-hint {
+  font-weight: 400;
+  text-transform: none;
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+.sim-input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 280px;
+}
+.sim-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.sim-input:focus {
+  border-color: #6abac1;
+  box-shadow: 0 0 0 3px rgba(106,186,193,0.18);
+}
+.sim-input-suffix {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+/* Résultat simulateur */
+.sim-result {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1.5px solid #e5e7eb;
+}
+
+/* Jauge */
+.sim-gauge-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.sim-gauge-track {
+  flex: 1;
+  height: 14px;
+  background: #e5e7eb;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.sim-gauge-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s;
+}
+.sim-gauge-pct {
+  font-size: 1.4rem;
+  font-weight: 800;
+  min-width: 62px;
+  text-align: right;
+  transition: color 0.4s;
+}
+
+/* Stats */
+.sim-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.sim-stat {
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.sim-stat-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+.sim-stat-val {
+  display: block;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #111827;
+  line-height: 1.2;
+}
+.sim-stat-label {
+  display: block;
+  font-size: 0.72rem;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+/* Message contextuel */
+.sim-message {
+  border-left: 3px solid;
+  padding: 10px 14px;
+  border-radius: 0 8px 8px 0;
+  background: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: border-color 0.4s, color 0.4s;
+}
+
+/* Placeholder */
+.sim-placeholder {
+  color: #9ca3af;
+  font-size: 0.85rem;
+  font-style: italic;
+  text-align: center;
+  padding: 16px 0;
+}
+
+/* Responsive insights */
+@media (max-width: 860px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .insights-body { padding: 16px; }
+}
+@media (max-width: 480px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .sim-stats { flex-direction: column; }
+}
+
+/* ══════════════════════════════
    LEAD CAPTURE – CONTACT BLOCK
 ══════════════════════════════ */
 .contact-block {
