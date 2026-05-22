@@ -30,6 +30,6 @@
 // 4. "Account" → copiez votre Public Key ci-dessous
 // ─────────────────────────────────────────────────────────────────────────────
 
-export const EMAILJS_SERVICE_ID  = 'VOTRE_SERVICE_ID'   // ex: 'service_abc123'
-export const EMAILJS_TEMPLATE_ID = 'VOTRE_TEMPLATE_ID'  // ex: 'template_xyz789'
-export const EMAILJS_PUBLIC_KEY  = 'VOTRE_PUBLIC_KEY'   // ex: 'aBcDeFgHiJkLmNoP'
+export const EMAILJS_SERVICE_ID  = 'service_ozkyg3s'
+export const EMAILJS_TEMPLATE_ID = 'template_l8cnytw'
+export const EMAILJS_PUBLIC_KEY  = 'STdG0Zv9vjqYT_1rV'
