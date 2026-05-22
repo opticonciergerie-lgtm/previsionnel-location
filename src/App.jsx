@@ -45,9 +45,13 @@ export default function App() {
 
   // ── Déverrouillage + envoi du lead ──
   const handleUnlock = useCallback(async () => {
+    const nom   = property.proprietaire.trim()
+    const adr   = property.adresse.trim()
     const phone = property.telephone.trim()
     const mail  = property.email.trim()
 
+    if (!nom)   { setLeadError('Veuillez saisir votre nom.'); return }
+    if (!adr)   { setLeadError("Veuillez saisir l'adresse du bien."); return }
     if (!phone) { setLeadError('Veuillez saisir votre numéro de téléphone.'); return }
     if (!mail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) {
       setLeadError('Veuillez saisir une adresse e-mail valide.'); return
@@ -92,7 +96,8 @@ export default function App() {
   const handlePropertyChange = useCallback((next) => {
     if (
       unlocked &&
-      (next.telephone !== property.telephone || next.email !== property.email)
+      (next.telephone !== property.telephone || next.email !== property.email ||
+       next.proprietaire !== property.proprietaire || next.adresse !== property.adresse)
     ) {
       setUnlocked(false)
     }

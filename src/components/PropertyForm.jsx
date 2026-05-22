@@ -36,50 +36,47 @@ export default function PropertyForm({ property, onChange, referenceData, unlock
       <h2>Informations du bien</h2>
 
       <div className="form-group">
-        <label>Nom du propriétaire</label>
+        <label>Nom du propriétaire <span className="label-required">*</span></label>
         <input
           type="text"
           value={property.proprietaire}
           onChange={e => set('proprietaire', e.target.value)}
           placeholder="M. / Mme Dupont"
+          disabled={unlocked}
         />
       </div>
 
       <div className="form-group">
-        <label>Adresse du bien</label>
+        <label>Adresse du bien <span className="label-required">*</span></label>
         <input
           type="text"
           value={property.adresse}
           onChange={e => set('adresse', e.target.value)}
           placeholder="12 rue de la Plage, Les Sables d'Olonne"
+          disabled={unlocked}
         />
       </div>
 
-      {/* ── Coordonnées de contact ── */}
-      <div className="contact-block">
-        <div className="contact-block-title">📬 Vos coordonnées pour accéder au prévisionnel</div>
+      <div className="form-group">
+        <label>N° de téléphone <span className="label-required">*</span></label>
+        <input
+          type="tel"
+          value={property.telephone}
+          onChange={e => set('telephone', e.target.value)}
+          placeholder="06 00 00 00 00"
+          disabled={unlocked}
+        />
+      </div>
 
-        <div className="form-group">
-          <label>N° de téléphone <span className="label-required">*</span></label>
-          <input
-            type="tel"
-            value={property.telephone}
-            onChange={e => set('telephone', e.target.value)}
-            placeholder="06 00 00 00 00"
-            disabled={unlocked}
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Adresse e-mail <span className="label-required">*</span></label>
-          <input
-            type="email"
-            value={property.email}
-            onChange={e => set('email', e.target.value)}
-            placeholder="vous@exemple.fr"
-            disabled={unlocked}
-          />
-        </div>
+      <div className="form-group">
+        <label>Adresse e-mail <span className="label-required">*</span></label>
+        <input
+          type="email"
+          value={property.email}
+          onChange={e => set('email', e.target.value)}
+          placeholder="vous@exemple.fr"
+          disabled={unlocked}
+        />
       </div>
 
       <div className="form-group">
