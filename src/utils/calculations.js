@@ -43,8 +43,8 @@ export function computeForecast(property, referenceData) {
   const extrasOccBonus  = extras.reduce((acc, e) => acc + (EXTRAS_OCC[e]   ?? 0), 0)
 
   return MONTHS.map((month, i) => {
-    const nightlyPrice  = Math.round(ref.prix_base * capMult * (1 + extrasPriceMult) * ref.price_coeffs[i])
-    const occupancyRate = Math.min(97, Math.round(ref.occupancy[i] * (1 + extrasOccBonus)))
+    const nightlyPrice  = Math.max(40, Math.round(ref.prix_base * capMult * (1 + extrasPriceMult) * ref.price_coeffs[i]))
+    const occupancyRate = Math.min(97, Math.round(ref.occupancy[i] + extrasOccBonus * 100))
     const daysInMonth   = DAYS_IN_MONTH[i]
     const nightsBooked  = Math.round((occupancyRate / 100) * daysInMonth)
     const revenue       = nightlyPrice * nightsBooked
