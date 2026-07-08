@@ -9,6 +9,34 @@
 // Variations par zone   : centre −3 pp / tranche −2 pp / longeville −3 pp
 
 export const defaultData = [
+  // ── SAINT-GILLES-CROIX-DE-VIE ──
+  // Base classique: 68€ · Pic août: ~109€ · Saisonnalité Vendée nord
+  // Comparable aux Sables, marché légèrement plus familial/résidentiel
+  {
+    zone: 'saint-gilles',
+    zoneName: 'Saint-Gilles-Croix-de-Vie',
+    style: 'classique',
+    prix_base: 68,
+    occupancy:    [18, 23, 30, 50, 60, 64, 79, 91, 71, 40, 18, 23],
+    price_coeffs: [0.55, 0.60, 0.65, 0.82, 0.90, 1.06, 1.38, 1.60, 1.06, 0.75, 0.55, 0.65],
+  },
+  {
+    zone: 'saint-gilles',
+    zoneName: 'Saint-Gilles-Croix-de-Vie',
+    style: 'luxe',
+    prix_base: 108,
+    occupancy:    [15, 20, 26, 46, 56, 60, 75, 87, 68, 36, 15, 20],
+    price_coeffs: [0.55, 0.60, 0.65, 0.82, 0.90, 1.04, 1.35, 1.57, 1.04, 0.75, 0.55, 0.65],
+  },
+  {
+    zone: 'saint-gilles',
+    zoneName: 'Saint-Gilles-Croix-de-Vie',
+    style: 'atypique',
+    prix_base: 92,
+    occupancy:    [22, 28, 36, 56, 66, 67, 82, 92, 73, 48, 25, 32],
+    price_coeffs: [0.58, 0.62, 0.68, 0.84, 0.92, 1.04, 1.32, 1.52, 1.05, 0.78, 0.58, 0.68],
+  },
+
   // ── BORD DE MER ──  (zone de référence, demande la plus forte)
   {
     zone: 'bord-mer',
