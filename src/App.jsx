@@ -10,7 +10,6 @@ import { defaultData } from './data/defaultData.js'
 import { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY } from './config/emailjs.js'
 
 const STYLE_LABELS   = { classique: 'Classique', luxe: 'Luxe / Premium', atypique: 'Atypique / Original' }
-const FORMULE_LABELS = { autonome: 'Entrée autonome (20%)', presentielle: 'Entrée présentielle (24%)' }
 const EXTRA_LABELS   = { piscine: 'Piscine', vue_mer: 'Vue mer', jardin: 'Jardin', parking: 'Parking', jacuzzi: 'Jacuzzi / Spa' }
 
 export default function App() {
@@ -24,7 +23,6 @@ export default function App() {
     chambres: 2,
     capacite: 4,
     extras: [],
-    formule: 'autonome',
   })
 
   const [unlocked,        setUnlocked]        = useState(false)
@@ -42,8 +40,6 @@ export default function App() {
     () => referenceData.find(r => r.zone === property.zone)?.zoneName ?? property.zone,
     [referenceData, property.zone]
   )
-  const commissionRate = property.formule === 'presentielle' ? 0.24 : 0.20
-
   // ── Déverrouillage + envoi du lead ──
   const handleUnlock = useCallback(async () => {
     const nom   = property.proprietaire.trim()
@@ -79,7 +75,6 @@ export default function App() {
           chambres:     `${property.chambres} chambre${property.chambres > 1 ? 's' : ''}`,
           capacite:     `${property.capacite} personnes`,
           extras:       extrasStr,
-          formule:      FORMULE_LABELS[property.formule] ?? property.formule,
         },
         EMAILJS_PUBLIC_KEY
       )
@@ -229,17 +224,15 @@ export default function App() {
         <section className="results-panel">
           {forecast ? (
             <>
-              <AnnualSummary forecast={forecast} commissionRate={commissionRate} unlocked={unlocked} />
+              <AnnualSummary forecast={forecast} unlocked={unlocked} />
               <ForecastTable
                 forecast={forecast}
                 property={property}
                 zoneName={zoneName}
-                commissionRate={commissionRate}
                 unlocked={unlocked}
               />
               <PerformanceInsights
                 forecast={forecast}
-                commissionRate={commissionRate}
                 unlocked={unlocked}
               />
             </>

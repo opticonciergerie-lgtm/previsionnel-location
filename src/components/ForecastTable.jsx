@@ -19,13 +19,10 @@ const loadImage = src => new Promise((resolve, reject) => {
   img.src = src
 })
 
-export default function ForecastTable({ forecast, property, zoneName, commissionRate, unlocked }) {
+export default function ForecastTable({ forecast, property, zoneName, unlocked }) {
   const totalRevenue = forecast.reduce((s, m) => s + m.revenue, 0)
   const totalNights  = forecast.reduce((s, m) => s + m.nightsBooked, 0)
   const avgOcc       = Math.round(forecast.reduce((s, m) => s + m.occupancyRate, 0) / 12)
-  const netRevenue   = Math.round(totalRevenue * (1 - commissionRate))
-  const pct          = Math.round(commissionRate * 100)
-  const formuleLabel = property.formule === 'presentielle' ? 'Entrée présentielle' : 'Entrée autonome'
   const year         = new Date().getFullYear()
 
   const exportPDF = async () => {
@@ -117,9 +114,9 @@ export default function ForecastTable({ forecast, property, zoneName, commission
     // ── Récapitulatif annuel ──
     const finalY = doc.lastAutoTable.finalY + 8
     doc.setFillColor(224, 247, 248)
-    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 46, 3, 3, 'F')
+    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 38, 3, 3, 'F')
     doc.setDrawColor(...TEAL)
-    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 46, 3, 3, 'S')
+    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 38, 3, 3, 'S')
 
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(11)
@@ -140,10 +137,9 @@ export default function ForecastTable({ forecast, property, zoneName, commission
       doc.setTextColor(31, 41, 55)
     }
 
-    drawStat("Taux d'occupation moyen : ", `${avgOcc} %`,      col1, finalY + 22)
+    drawStat("Taux d'occupation moyen : ", `${avgOcc} %`,          col1, finalY + 22)
     drawStat("Nuits louées / an : ",       `${totalNights} nuits`, col1, finalY + 33)
-    drawStat("CA brut estimé : ",                       fmtEur(totalRevenue), col2, finalY + 22)
-    drawStat(`Revenu net (après ${pct}% - ${formuleLabel}) : `, fmtEur(netRevenue), col2, finalY + 33, true, TEAL)
+    drawStat("CA estimé / an : ",          fmtEur(totalRevenue),   col2, finalY + 27, true, TEAL)
 
     // ── Pied de page ──
     doc.setFont('helvetica', 'italic')

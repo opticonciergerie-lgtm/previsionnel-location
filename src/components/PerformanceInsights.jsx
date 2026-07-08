@@ -2,13 +2,12 @@ import { useState, useMemo } from 'react'
 
 const fmt = n => Math.round(n).toLocaleString('fr-FR')
 
-export default function PerformanceInsights({ forecast, commissionRate, unlocked }) {
+export default function PerformanceInsights({ forecast, unlocked }) {
   const [charges, setCharges] = useState('')
 
   // ── Calculs KPI ──────────────────────────────────────────
   const totalRevenue  = forecast.reduce((s, m) => s + m.revenue, 0)
   const totalNights   = forecast.reduce((s, m) => s + m.nightsBooked, 0)
-  const netRevenue    = Math.round(totalRevenue * (1 - commissionRate))
 
   const bestMonth     = forecast.reduce((b, m) => m.revenue  > b.revenue  ? m : b, forecast[0])
   const worstMonth    = forecast.reduce((w, m) => m.revenue  < w.revenue  ? m : w, forecast[0])
@@ -16,15 +15,15 @@ export default function PerformanceInsights({ forecast, commissionRate, unlocked
 
   const avgNightly    = totalNights > 0 ? Math.round(totalRevenue / totalNights) : 0
   const revPAN        = Math.round(totalRevenue / 365)
-  const avgMonthly    = Math.round(netRevenue / 12)
+  const avgMonthly    = Math.round(totalRevenue / 12)
 
   // ── Simulation charges ───────────────────────────────────
   const chargesNum    = parseFloat(charges.replace(',', '.')) || 0
   const annualCharges = chargesNum * 12
-  const coverage      = annualCharges > 0 ? (netRevenue / annualCharges) * 100 : 0
+  const coverage      = annualCharges > 0 ? (totalRevenue / annualCharges) * 100 : 0
   const coverageCapped = Math.min(coverage, 100)
-  const monthsCovered = annualCharges > 0 ? Math.round((netRevenue / annualCharges) * 12) : 0
-  const surplus       = annualCharges > 0 ? Math.round(netRevenue - annualCharges) : 0
+  const monthsCovered = annualCharges > 0 ? Math.round((totalRevenue / annualCharges) * 12) : 0
+  const surplus       = annualCharges > 0 ? Math.round(totalRevenue - annualCharges) : 0
 
   const coverageColor = coverage >= 100 ? '#10b981' : coverage >= 70 ? '#f59e0b' : '#ef4444'
   const coverageLabel =
@@ -72,9 +71,9 @@ export default function PerformanceInsights({ forecast, commissionRate, unlocked
     },
     {
       icon: '💰',
-      label: 'Revenu net / mois moy.',
+      label: 'CA moyen / mois',
       value: `${fmt(avgMonthly)} €`,
-      sub: `Après commission ${Math.round(commissionRate * 100)}% TTC`,
+      sub: 'Moyenne mensuelle sur 12 mois',
       color: '#8b5cf6',
     },
   ]
@@ -173,8 +172,8 @@ export default function PerformanceInsights({ forecast, commissionRate, unlocked
                 <div className="sim-stat">
                   <span className="sim-stat-icon">💰</span>
                   <div>
-                    <span className="sim-stat-val">{fmt(netRevenue)} €</span>
-                    <span className="sim-stat-label">de revenu net annuel estimé</span>
+                    <span className="sim-stat-val">{fmt(totalRevenue)} €</span>
+                    <span className="sim-stat-label">de CA annuel estimé</span>
                   </div>
                 </div>
               </div>
