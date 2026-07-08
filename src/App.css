@@ -316,7 +316,7 @@ body {
 }
 
 /* Annual summary cards */
-.annual-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.annual-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 .summary-card {
   background: #fff; border-radius: 12px; padding: 20px;
   display: flex; flex-direction: column; gap: 6px;
