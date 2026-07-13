@@ -132,27 +132,29 @@ export default function ForecastTable({ forecast, property, zoneName, unlocked, 
     const col1 = margin + 4
     const col2 = pageWidth / 2 + 4
 
-    // label à gauche, valeur alignée à droite de la page
+    const valX = pageWidth - margin - 4
+
+    // label à gauche, valeur alignée à droite
     const drawRight = (label, value, yPos, bold = false, color = null) => {
       doc.setFont('helvetica', 'normal')
       doc.setTextColor(31, 41, 55)
       doc.text(label, col2, yPos)
       if (color) doc.setTextColor(...color)
       doc.setFont('helvetica', bold ? 'bold' : 'normal')
-      doc.text(value, pageWidth - margin, yPos, { align: 'right' })
+      doc.text(value, valX, yPos, { align: 'right' })
       doc.setTextColor(31, 41, 55)
     }
 
     // col gauche : stats occupation
     doc.setFont('helvetica', 'normal')
     doc.setTextColor(31, 41, 55)
-    doc.text(`Taux d'occupation moyen : ${avgOcc} %`,   col1, finalY + 20)
-    doc.text(`Nuits louées / an : ${totalNights} nuits`, col1, finalY + 30)
+    doc.text(`Taux d'occupation moyen : ${avgOcc} %`,    col1, finalY + 20)
+    doc.text(`Nuits louees / an : ${totalNights} nuits`, col1, finalY + 30)
 
     // col droite : financier
-    drawRight("CA brut estimé :",                       fmtEur(totalRevenue), finalY + 20)
-    drawRight(`Frais location (≈16% + ${pct}%) :`,      fmtEur(fraisPDF),     finalY + 30)
-    drawRight("Résultat net estimé :",                  fmtEur(netRevPDF),    finalY + 40, true, TEAL)
+    drawRight('CA brut estime :',                   fmtEur(totalRevenue), finalY + 20)
+    drawRight(`Frais location (~16% + ${pct}%) :`,  fmtEur(fraisPDF),     finalY + 30)
+    drawRight('Resultat net estime :',              fmtEur(netRevPDF),    finalY + 40, true, TEAL)
 
     // ── Pied de page ──
     doc.setFont('helvetica', 'italic')
