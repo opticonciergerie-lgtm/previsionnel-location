@@ -19,7 +19,7 @@ const loadImage = src => new Promise((resolve, reject) => {
   img.src = src
 })
 
-export default function ForecastTable({ forecast, property, zoneName, unlocked }) {
+export default function ForecastTable({ forecast, property, zoneName, unlocked, conciergerieRate }) {
   const totalRevenue = forecast.reduce((s, m) => s + m.revenue, 0)
   const totalNights  = forecast.reduce((s, m) => s + m.nightsBooked, 0)
   const avgOcc       = Math.round(forecast.reduce((s, m) => s + m.occupancyRate, 0) / 12)
@@ -113,10 +113,13 @@ export default function ForecastTable({ forecast, property, zoneName, unlocked }
 
     // ── Récapitulatif annuel ──
     const finalY = doc.lastAutoTable.finalY + 8
+    const pct        = conciergerieRate ?? 20
+    const netRevPDF  = Math.round(totalRevenue * 0.84 * (1 - pct / 100))
+
     doc.setFillColor(224, 247, 248)
-    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 38, 3, 3, 'F')
+    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 52, 3, 3, 'F')
     doc.setDrawColor(...TEAL)
-    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 38, 3, 3, 'S')
+    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 52, 3, 3, 'S')
 
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(11)
@@ -139,7 +142,8 @@ export default function ForecastTable({ forecast, property, zoneName, unlocked }
 
     drawStat("Taux d'occupation moyen : ", `${avgOcc} %`,          col1, finalY + 22)
     drawStat("Nuits louées / an : ",       `${totalNights} nuits`, col1, finalY + 33)
-    drawStat("CA estimé / an : ",          fmtEur(totalRevenue),   col2, finalY + 27, true, TEAL)
+    drawStat("CA brut estimé : ",          fmtEur(totalRevenue),   col2, finalY + 22)
+    drawStat(`Résultat net (−16% plateformes −${pct}% conciergerie) : `, fmtEur(netRevPDF), col1, finalY + 44, true, TEAL)
 
     // ── Pied de page ──
     doc.setFont('helvetica', 'italic')

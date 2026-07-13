@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 
 const fmt = n => Math.round(n).toLocaleString('fr-FR')
 
-export default function PerformanceInsights({ forecast, unlocked }) {
+export default function PerformanceInsights({ forecast, unlocked, conciergerieRate, onConciergerieRateChange }) {
   const [charges, setCharges] = useState('')
 
   // ── Calculs KPI ──────────────────────────────────────────
@@ -190,6 +190,52 @@ export default function PerformanceInsights({ forecast, unlocked }) {
               Renseignez vos charges mensuelles pour simuler la couverture de votre bien.
             </p>
           )}
+        </div>
+
+        {/* ── Séparateur net ── */}
+        <div className="insights-divider">
+          <span>Résultat après charges de location</span>
+        </div>
+
+        {/* ── Simulateur net ── */}
+        <div className="sim-block">
+          <div className="sim-input-area">
+            <label className="sim-label">
+              🏢 Frais de conciergerie
+              <span className="sim-label-hint"> (appliqués après déduction des 16% de plateformes)</span>
+            </label>
+            <div className="sim-slider-row">
+              <span className="sim-slider-bound">12%</span>
+              <input
+                type="range"
+                className="sim-slider"
+                min="12" max="25" step="1"
+                value={conciergerieRate}
+                onChange={e => onConciergerieRateChange(Number(e.target.value))}
+              />
+              <span className="sim-slider-bound">25%</span>
+              <span className="sim-slider-value">{conciergerieRate}%</span>
+            </div>
+          </div>
+
+          <div className="net-breakdown">
+            <div className="net-row">
+              <span className="net-row-label">CA brut estimé</span>
+              <span className="net-row-value">{fmt(totalRevenue)} €</span>
+            </div>
+            <div className="net-row deduction">
+              <span className="net-row-label">− Frais plateformes (16%)</span>
+              <span className="net-row-value neg">− {fmt(totalRevenue * 0.16)} €</span>
+            </div>
+            <div className="net-row deduction">
+              <span className="net-row-label">− Frais conciergerie ({conciergerieRate}%)</span>
+              <span className="net-row-value neg">− {fmt(totalRevenue * 0.84 * (conciergerieRate / 100))} €</span>
+            </div>
+            <div className="net-row total">
+              <span className="net-row-label">💶 Vous percevez</span>
+              <span className="net-row-value highlight">{fmt(totalRevenue * 0.84 * (1 - conciergerieRate / 100))} €</span>
+            </div>
+          </div>
         </div>
 
         {/* ── Overlay verrouillage ── */}

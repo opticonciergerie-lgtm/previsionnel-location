@@ -25,9 +25,10 @@ export default function App() {
     extras: [],
   })
 
-  const [unlocked,        setUnlocked]        = useState(false)
-  const [sendingLead,     setSendingLead]      = useState(false)
-  const [leadError,       setLeadError]        = useState('')
+  const [unlocked,           setUnlocked]        = useState(false)
+  const [sendingLead,        setSendingLead]      = useState(false)
+  const [leadError,          setLeadError]        = useState('')
+  const [conciergerieRate,   setConciergerieRate] = useState(20)
 
   const [referenceData, setReferenceData]   = useState(defaultData)
   const [sheetUrl, setSheetUrl]             = useState(() => localStorage.getItem('sheetUrl') ?? '')
@@ -230,10 +231,13 @@ export default function App() {
                 property={property}
                 zoneName={zoneName}
                 unlocked={unlocked}
+                conciergerieRate={conciergerieRate}
               />
               <PerformanceInsights
                 forecast={forecast}
                 unlocked={unlocked}
+                conciergerieRate={conciergerieRate}
+                onConciergerieRateChange={setConciergerieRate}
               />
             </>
           ) : (
