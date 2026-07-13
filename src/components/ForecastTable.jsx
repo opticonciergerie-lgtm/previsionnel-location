@@ -140,10 +140,17 @@ export default function ForecastTable({ forecast, property, zoneName, unlocked, 
       doc.setTextColor(31, 41, 55)
     }
 
-    drawStat("Taux d'occupation moyen : ", `${avgOcc} %`,          col1, finalY + 22)
-    drawStat("Nuits louées / an : ",       `${totalNights} nuits`, col1, finalY + 33)
-    drawStat("CA brut estimé : ",          fmtEur(totalRevenue),   col2, finalY + 22)
-    drawStat(`Résultat net (−16% plateformes −${pct}% conciergerie) : `, fmtEur(netRevPDF), col1, finalY + 44, true, TEAL)
+    drawStat("Taux d'occupation moyen : ", `${avgOcc} %`,          col1, finalY + 20)
+    drawStat("Nuits louées / an : ",       `${totalNights} nuits`, col1, finalY + 30)
+    drawStat("CA brut estimé : ",          fmtEur(totalRevenue),   col2, finalY + 20)
+
+    // Ligne résultat net — label à gauche, valeur alignée à droite
+    const netLabel = `Résultat net (−16% plateformes, −${pct}% conciergerie) :`
+    doc.setFont('helvetica', 'bold')
+    doc.setFontSize(9.5)
+    doc.setTextColor(...TEAL)
+    doc.text(netLabel, col1, finalY + 42)
+    doc.text(fmtEur(netRevPDF), pageWidth - margin, finalY + 42, { align: 'right' })
 
     // ── Pied de page ──
     doc.setFont('helvetica', 'italic')

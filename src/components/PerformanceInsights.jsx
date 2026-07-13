@@ -212,6 +212,7 @@ export default function PerformanceInsights({ forecast, unlocked, conciergerieRa
                 min="12" max="25" step="1"
                 value={conciergerieRate}
                 onChange={e => onConciergerieRateChange(Number(e.target.value))}
+                style={{ '--pct': `${((conciergerieRate - 12) / 13) * 100}%` }}
               />
               <span className="sim-slider-bound">25%</span>
               <span className="sim-slider-value">{conciergerieRate}%</span>
