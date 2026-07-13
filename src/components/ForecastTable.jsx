@@ -112,14 +112,15 @@ export default function ForecastTable({ forecast, property, zoneName, unlocked, 
     })
 
     // ── Récapitulatif annuel ──
-    const finalY = doc.lastAutoTable.finalY + 8
-    const pct        = conciergerieRate ?? 20
-    const netRevPDF  = Math.round(totalRevenue * 0.84 * (1 - pct / 100))
+    const finalY    = doc.lastAutoTable.finalY + 8
+    const pct       = conciergerieRate ?? 20
+    const netRevPDF = Math.round(totalRevenue * 0.84 * (1 - pct / 100))
+    const fraisPDF  = totalRevenue - netRevPDF
 
     doc.setFillColor(224, 247, 248)
-    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 52, 3, 3, 'F')
+    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 62, 3, 3, 'F')
     doc.setDrawColor(...TEAL)
-    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 52, 3, 3, 'S')
+    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 62, 3, 3, 'S')
 
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(11)
@@ -133,6 +134,7 @@ export default function ForecastTable({ forecast, property, zoneName, unlocked, 
 
     const drawStat = (label, value, x, yPos, bold = false, color = null) => {
       doc.setFont('helvetica', 'normal')
+      doc.setTextColor(31, 41, 55)
       doc.text(label, x, yPos)
       if (color) doc.setTextColor(...color)
       doc.setFont('helvetica', bold ? 'bold' : 'normal')
@@ -140,17 +142,11 @@ export default function ForecastTable({ forecast, property, zoneName, unlocked, 
       doc.setTextColor(31, 41, 55)
     }
 
-    drawStat("Taux d'occupation moyen : ", `${avgOcc} %`,          col1, finalY + 20)
-    drawStat("Nuits louées / an : ",       `${totalNights} nuits`, col1, finalY + 30)
-    drawStat("CA brut estimé : ",          fmtEur(totalRevenue),   col2, finalY + 20)
-
-    // Ligne résultat net — label à gauche, valeur alignée à droite
-    const netLabel = `Résultat net (−16% plateformes, −${pct}% conciergerie) :`
-    doc.setFont('helvetica', 'bold')
-    doc.setFontSize(9.5)
-    doc.setTextColor(...TEAL)
-    doc.text(netLabel, col1, finalY + 42)
-    doc.text(fmtEur(netRevPDF), pageWidth - margin, finalY + 42, { align: 'right' })
+    drawStat("Taux d'occupation moyen : ", `${avgOcc} %`,          col1, finalY + 22)
+    drawStat("Nuits louées / an : ",       `${totalNights} nuits`, col1, finalY + 33)
+    drawStat("CA brut estimé : ",          fmtEur(totalRevenue),   col2, finalY + 22)
+    drawStat(`Frais total de location (16% + ${pct}%) : `,         fmtEur(fraisPDF),  col2, finalY + 33)
+    drawStat("Résultat net estimé : ",     fmtEur(netRevPDF),      col2, finalY + 44, true, TEAL)
 
     // ── Pied de page ──
     doc.setFont('helvetica', 'italic')
