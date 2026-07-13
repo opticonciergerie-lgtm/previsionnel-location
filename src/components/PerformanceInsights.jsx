@@ -225,7 +225,7 @@ export default function PerformanceInsights({ forecast, unlocked, conciergerieRa
               <span className="net-row-value">{fmt(totalRevenue)} €</span>
             </div>
             <div className="net-row deduction">
-              <span className="net-row-label">− Frais plateformes (16%)</span>
+              <span className="net-row-label">− Frais plateformes (≈ 16%)</span>
               <span className="net-row-value neg">− {fmt(totalRevenue * 0.16)} €</span>
             </div>
             <div className="net-row deduction">

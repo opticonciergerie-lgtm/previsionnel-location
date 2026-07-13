@@ -118,9 +118,9 @@ export default function ForecastTable({ forecast, property, zoneName, unlocked, 
     const fraisPDF  = totalRevenue - netRevPDF
 
     doc.setFillColor(224, 247, 248)
-    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 62, 3, 3, 'F')
+    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 54, 3, 3, 'F')
     doc.setDrawColor(...TEAL)
-    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 62, 3, 3, 'S')
+    doc.roundedRect(margin, finalY, pageWidth - margin * 2, 54, 3, 3, 'S')
 
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(11)
@@ -142,11 +142,11 @@ export default function ForecastTable({ forecast, property, zoneName, unlocked, 
       doc.setTextColor(31, 41, 55)
     }
 
-    drawStat("Taux d'occupation moyen : ", `${avgOcc} %`,          col1, finalY + 22)
-    drawStat("Nuits louées / an : ",       `${totalNights} nuits`, col1, finalY + 33)
-    drawStat("CA brut estimé : ",          fmtEur(totalRevenue),   col2, finalY + 22)
-    drawStat(`Frais total de location (16% + ${pct}%) : `,         fmtEur(fraisPDF),  col2, finalY + 33)
-    drawStat("Résultat net estimé : ",     fmtEur(netRevPDF),      col2, finalY + 44, true, TEAL)
+    drawStat("Taux d'occupation moyen : ", `${avgOcc} %`,          col1, finalY + 20)
+    drawStat("Nuits louées / an : ",       `${totalNights} nuits`, col1, finalY + 30)
+    drawStat("CA brut estimé : ",          fmtEur(totalRevenue),   col2, finalY + 20)
+    drawStat(`Frais total de location (≈ 16% + ${pct}%) : `,  fmtEur(fraisPDF),  col2, finalY + 30)
+    drawStat("Résultat net estimé : ",     fmtEur(netRevPDF),      col2, finalY + 40, true, TEAL)
 
     // ── Pied de page ──
     doc.setFont('helvetica', 'italic')
@@ -154,7 +154,7 @@ export default function ForecastTable({ forecast, property, zoneName, unlocked, 
     doc.setTextColor(156, 163, 175)
     doc.text(
       `Estimation établie le ${new Date().toLocaleDateString('fr-FR')} · Les résultats réels peuvent varier selon le marché, la localisation exacte et la stratégie de location.`,
-      pageWidth / 2, 287, { align: 'center' }
+      pageWidth / 2, 291, { align: 'center' }
     )
 
     const slug = (property.proprietaire || 'client').toLowerCase().replace(/[^a-z0-9]+/g, '_')
