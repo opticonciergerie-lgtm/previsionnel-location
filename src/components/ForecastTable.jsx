@@ -132,21 +132,27 @@ export default function ForecastTable({ forecast, property, zoneName, unlocked, 
     const col1 = margin + 4
     const col2 = pageWidth / 2 + 4
 
-    const drawStat = (label, value, x, yPos, bold = false, color = null) => {
+    // label à gauche, valeur alignée à droite de la page
+    const drawRight = (label, value, yPos, bold = false, color = null) => {
       doc.setFont('helvetica', 'normal')
       doc.setTextColor(31, 41, 55)
-      doc.text(label, x, yPos)
+      doc.text(label, col2, yPos)
       if (color) doc.setTextColor(...color)
       doc.setFont('helvetica', bold ? 'bold' : 'normal')
-      doc.text(value, x + doc.getTextWidth(label), yPos)
+      doc.text(value, pageWidth - margin, yPos, { align: 'right' })
       doc.setTextColor(31, 41, 55)
     }
 
-    drawStat("Taux d'occupation moyen : ", `${avgOcc} %`,          col1, finalY + 20)
-    drawStat("Nuits louées / an : ",       `${totalNights} nuits`, col1, finalY + 30)
-    drawStat("CA brut estimé : ",          fmtEur(totalRevenue),   col2, finalY + 20)
-    drawStat(`Frais total de location (≈ 16% + ${pct}%) : `,  fmtEur(fraisPDF),  col2, finalY + 30)
-    drawStat("Résultat net estimé : ",     fmtEur(netRevPDF),      col2, finalY + 40, true, TEAL)
+    // col gauche : stats occupation
+    doc.setFont('helvetica', 'normal')
+    doc.setTextColor(31, 41, 55)
+    doc.text(`Taux d'occupation moyen : ${avgOcc} %`,   col1, finalY + 20)
+    doc.text(`Nuits louées / an : ${totalNights} nuits`, col1, finalY + 30)
+
+    // col droite : financier
+    drawRight("CA brut estimé :",                       fmtEur(totalRevenue), finalY + 20)
+    drawRight(`Frais location (≈16% + ${pct}%) :`,      fmtEur(fraisPDF),     finalY + 30)
+    drawRight("Résultat net estimé :",                  fmtEur(netRevPDF),    finalY + 40, true, TEAL)
 
     // ── Pied de page ──
     doc.setFont('helvetica', 'italic')
