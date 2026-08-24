@@ -18,7 +18,7 @@ export default function App() {
     adresse: '',
     telephone: '',
     email: '',
-    zone: 'bord-mer',
+    zone: 'fr_coastal_med',
     style: 'classique',
     chambres: 2,
     capacite: 4,

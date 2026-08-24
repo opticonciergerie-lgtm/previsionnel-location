@@ -245,6 +245,28 @@ body {
 }
 .label-hint { font-weight: 400; text-transform: none; color: #9ca3af; font-size: 0.72rem; }
 
+/* ── Autocomplete adresse ── */
+.addr-wrap { position: relative; }
+.addr-input { width: 100%; }
+.addr-spinner { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 0.8rem; }
+.addr-dropdown {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+  background: #fff; border: 1px solid #d1d5db; border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.12); z-index: 200;
+  list-style: none; margin: 0; padding: 4px 0; max-height: 260px; overflow-y: auto;
+}
+.addr-option {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 10px 14px; cursor: pointer; font-size: 0.88rem; color: #374151;
+  transition: background 0.1s;
+}
+.addr-option:hover { background: #f0fdfa; }
+.addr-option-icon { flex-shrink: 0; margin-top: 1px; }
+.zone-detected {
+  margin-top: 6px; font-size: 0.82rem; color: #6abac1;
+}
+.zone-detected strong { color: #3d9ea6; }
+
 .form-group input,
 .form-group select {
   width: 100%; padding: 9px 12px;

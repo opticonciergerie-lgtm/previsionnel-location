@@ -1,4 +1,5 @@
-import { useMemo } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
+import { detectZone } from '../utils/geoDetection.js'
 
 const STYLES = [
   { value: 'classique', label: 'Classique' },
@@ -15,12 +16,13 @@ const EXTRAS = [
 ]
 
 export default function PropertyForm({ property, onChange, referenceData, unlocked, onUnlock, sending, leadError }) {
-  const zones = useMemo(() => {
-    const seen = new Set()
-    return referenceData
-      .filter(r => { const k = r.zone; if (seen.has(k)) return false; seen.add(k); return true })
-      .map(r => ({ value: r.zone, label: r.zoneName }))
-  }, [referenceData])
+  const [query, setQuery]           = useState(property.adresse || '')
+  const [suggestions, setSuggestions] = useState([])
+  const [addrLoading, setAddrLoading] = useState(false)
+  const [detectedZoneName, setDetectedZoneName] = useState('')
+  const [showDropdown, setShowDropdown] = useState(false)
+  const debounceRef = useRef(null)
+  const wrapperRef  = useRef(null)
 
   const set = (key, value) => onChange({ ...property, [key]: value })
 
@@ -29,6 +31,49 @@ export default function PropertyForm({ property, onChange, referenceData, unlock
       ? property.extras.filter(e => e !== extra)
       : [...property.extras, extra]
     set('extras', next)
+  }
+
+  // Fermer dropdown si clic extérieur
+  useEffect(() => {
+    const handler = e => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+        setShowDropdown(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
+
+  const searchAddress = useCallback((q) => {
+    clearTimeout(debounceRef.current)
+    if (q.length < 3) { setSuggestions([]); setShowDropdown(false); return }
+    setAddrLoading(true)
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const res  = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(q)}&limit=6&autocomplete=1`)
+        const data = await res.json()
+        setSuggestions(data.features || [])
+        setShowDropdown((data.features || []).length > 0)
+      } catch { setSuggestions([]); setShowDropdown(false) }
+      finally  { setAddrLoading(false) }
+    }, 280)
+  }, [])
+
+  const handleInputChange = e => {
+    const v = e.target.value
+    setQuery(v)
+    onChange({ ...property, adresse: v, zone: property.zone })
+    searchAddress(v)
+  }
+
+  const handleSelect = feature => {
+    const { label, postcode, city } = feature.properties
+    const { zone, zoneName } = detectZone(postcode, referenceData)
+    setQuery(label)
+    setSuggestions([])
+    setShowDropdown(false)
+    setDetectedZoneName(zoneName)
+    onChange({ ...property, adresse: label, zone })
   }
 
   return (
@@ -46,15 +91,38 @@ export default function PropertyForm({ property, onChange, referenceData, unlock
         />
       </div>
 
-      <div className="form-group">
-        <label>Adresse du bien <span className="label-required">*</span></label>
-        <input
-          type="text"
-          value={property.adresse}
-          onChange={e => set('adresse', e.target.value)}
-          placeholder="12 rue de la Plage, Les Sables d'Olonne"
-          disabled={unlocked}
-        />
+      {/* ── Adresse avec autocomplete ── */}
+      <div className="form-group" ref={wrapperRef}>
+        <label>Adresse exacte du bien <span className="label-required">*</span></label>
+        <div className="addr-wrap">
+          <input
+            type="text"
+            className="addr-input"
+            value={query}
+            onChange={handleInputChange}
+            onFocus={() => suggestions.length > 0 && setShowDropdown(true)}
+            placeholder="12 rue de la Plage, 85800 Saint-Gilles-Croix-de-Vie"
+            autoComplete="off"
+            disabled={unlocked}
+          />
+          {addrLoading && <span className="addr-spinner">⏳</span>}
+          {showDropdown && suggestions.length > 0 && (
+            <ul className="addr-dropdown">
+              {suggestions.map((f, i) => (
+                <li key={i} className="addr-option" onMouseDown={() => handleSelect(f)}>
+                  <span className="addr-option-icon">📍</span>
+                  <span>{f.properties.label}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        {detectedZoneName && !unlocked && (
+          <p className="zone-detected">✓ Zone détectée : <strong>{detectedZoneName}</strong></p>
+        )}
+        {unlocked && property.adresse && (
+          <p className="zone-detected">📍 <strong>{property.adresse}</strong></p>
+        )}
       </div>
 
       <div className="form-group">
@@ -77,15 +145,6 @@ export default function PropertyForm({ property, onChange, referenceData, unlock
           placeholder="vous@exemple.fr"
           disabled={unlocked}
         />
-      </div>
-
-      <div className="form-group">
-        <label>Zone</label>
-        <select value={property.zone} onChange={e => set('zone', e.target.value)}>
-          {zones.map(z => (
-            <option key={z.value} value={z.value}>{z.label}</option>
-          ))}
-        </select>
       </div>
 
       <div className="form-group">
